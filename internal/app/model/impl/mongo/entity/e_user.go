@@ -32,6 +32,7 @@ type User struct {
 	Password string `bson:"password"`  // 密码(sha1(md5(明文))加密)
 	Email    string `bson:"email"`     // 邮箱
 	Phone    string `bson:"phone"`     // 手机号
+	Avatar   string `bson:"avatar"`    // 头像
 	Status   int    `bson:"status"`    // 状态(1:启用 2:停用)
 	Creator  string `bson:"creator"`   // 创建者
 }

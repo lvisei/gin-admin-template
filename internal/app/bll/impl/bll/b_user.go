@@ -175,6 +175,28 @@ func (a *User) Update(ctx context.Context, id string, item schema.User) error {
 	return nil
 }
 
+// ResetPassword 重置密码
+func (a *User) ResetPassword(ctx context.Context, id string, password string) error {
+	oldItem, err := a.Get(ctx, id)
+	if err != nil {
+		return err
+	} else if oldItem == nil {
+		return errors.ErrNotFound
+	}
+
+	password = util.SHA1HashString(password)
+
+	err = ExecTrans(ctx, a.TransModel, func(ctx context.Context) error {
+		return a.UserModel.UpdatePassword(ctx, id, password)
+	})
+	if err != nil {
+		return err
+	}
+
+	LoadCasbinPolicy(ctx, a.Enforcer)
+	return nil
+}
+
 func (a *User) compareUserRoles(ctx context.Context, oldUserRoles, newUserRoles schema.UserRoles) (addList, delList schema.UserRoles) {
 	mOldUserRoles := oldUserRoles.ToMap()
 	mNewUserRoles := newUserRoles.ToMap()

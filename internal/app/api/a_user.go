@@ -89,6 +89,19 @@ func (a *User) Update(c *gin.Context) {
 	ginplus.ResOK(c)
 }
 
+// ResetPassword 重置密码
+func (a *User) ResetPassword(c *gin.Context) {
+	ctx := c.Request.Context()
+	password := string(ginplus.GetBody(c))
+
+	err := a.UserBll.ResetPassword(ctx, c.Param("id"), password)
+	if err != nil {
+		ginplus.ResError(c, err)
+		return
+	}
+	ginplus.ResOK(c)
+}
+
 // Delete 删除数据
 func (a *User) Delete(c *gin.Context) {
 	ctx := c.Request.Context()

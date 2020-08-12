@@ -42,6 +42,9 @@ func UserAuthMiddleware(a auth.Auther, skippers ...SkipperFunc) gin.HandlerFunc 
 				}
 				ginplus.ResError(c, errors.ErrInvalidToken)
 				return
+			} else if err == auth.ErrExpiredToken {
+				ginplus.ResError(c, errors.ErrExpiredToken)
+				return
 			}
 			ginplus.ResError(c, errors.WithStack(err))
 			return

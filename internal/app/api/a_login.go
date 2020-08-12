@@ -137,6 +137,23 @@ func (a *Login) QueryUserMenuTree(c *gin.Context) {
 	ginplus.ResList(c, menus)
 }
 
+// UpdateUserInfo 更新当前用户信息
+func (a *Login) UpdateUserInfo(c *gin.Context) {
+	ctx := c.Request.Context()
+	var item schema.UpdateUserParam
+	if err := ginplus.ParseJSON(c, &item); err != nil {
+		ginplus.ResError(c, err)
+		return
+	}
+
+	err := a.LoginBll.UpdateUserInfo(ctx, ginplus.GetUserID(c), item)
+	if err != nil {
+		ginplus.ResError(c, err)
+		return
+	}
+	ginplus.ResOK(c)
+}
+
 // UpdatePassword 更新个人密码
 func (a *Login) UpdatePassword(c *gin.Context) {
 	ctx := c.Request.Context()

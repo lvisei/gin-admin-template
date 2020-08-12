@@ -8,7 +8,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-const defaultKey = "gin-admin"
+const defaultKey = "gin-admin-template"
 
 var defaultOptions = options{
 	tokenType:     "Bearer",
@@ -110,6 +110,14 @@ func (a *JWTAuth) GenerateToken(ctx context.Context, userID string) (auth.TokenI
 func (a *JWTAuth) parseToken(tokenString string) (*jwt.StandardClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, a.opts.keyfunc)
 	if err != nil {
+		if validationErr, ok := err.(*jwt.ValidationError); ok {
+			if validationErr.Errors == jwt.ValidationErrorExpired {
+				return nil, auth.ErrExpiredToken
+			} else if validationErr.Errors == jwt.ValidationErrorMalformed {
+				return nil, auth.ErrInvalidToken
+			}
+		}
+
 		return nil, err
 	} else if !token.Valid {
 		return nil, auth.ErrInvalidToken

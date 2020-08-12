@@ -7,6 +7,7 @@ require (
 	github.com/LyricTian/gzip v0.1.1
 	github.com/LyricTian/queue v1.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/brianvoe/gofakeit/v5 v5.9.1
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/casbin/casbin/v2 v2.4.1
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect

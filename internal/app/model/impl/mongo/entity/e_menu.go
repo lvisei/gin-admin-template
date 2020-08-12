@@ -30,7 +30,9 @@ type Menu struct {
 	Name       string `bson:"name"`        // 菜单名称
 	Sequence   int    `bson:"sequence"`    // 排序值
 	Icon       string `bson:"icon"`        // 菜单图标
-	Router     string `bson:"router"`      // 访问路由
+	RouteName  string `bson:"route_name"`  // 路由名称
+	RoutePath  string `bson:"route_path"`  // 路由地址
+	Component  string `bson:"component"`   // 组件路径
 	ParentID   string `bson:"parent_id"`   // 父级内码
 	ParentPath string `bson:"parent_path"` // 父级路径
 	ShowStatus int    `bson:"show_status"` // 状态(1:显示 2:隐藏)

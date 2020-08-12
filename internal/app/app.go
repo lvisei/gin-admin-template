@@ -42,7 +42,7 @@ func SetConfigFile(s string) Option {
 	}
 }
 
-// SetModelFile 设定casbin模型配置文件
+// SetModelFile 设定 casbin 模型配置文件
 func SetModelFile(s string) Option {
 	return func(o *options) {
 		o.ModelFile = s

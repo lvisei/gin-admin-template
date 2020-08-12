@@ -62,6 +62,7 @@ func BuildInjector() (*Injector, func(), error) {
 	apiDemo := &api.Demo{
 		DemoBll: bllDemo,
 	}
+	mock := &api.Mock{}
 	menu := &model.Menu{
 		DB: db,
 	}
@@ -112,14 +113,17 @@ func BuildInjector() (*Injector, func(), error) {
 	apiUser := &api.User{
 		UserBll: bllUser,
 	}
+	sys := &api.Sys{}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
 		DemoAPI:        apiDemo,
+		MockAPI:        mock,
 		LoginAPI:       apiLogin,
 		MenuAPI:        apiMenu,
 		RoleAPI:        apiRole,
 		UserAPI:        apiUser,
+		SysAPI:         sys,
 	}
 	engine := InitGinEngine(routerRouter)
 	injector := &Injector{

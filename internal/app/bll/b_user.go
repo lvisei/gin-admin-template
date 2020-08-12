@@ -18,6 +18,8 @@ type IUser interface {
 	Create(ctx context.Context, item schema.User) (*schema.IDResult, error)
 	// 更新数据
 	Update(ctx context.Context, id string, item schema.User) error
+	// 重置密码
+	ResetPassword(ctx context.Context, id string, password string) error
 	// 删除数据
 	Delete(ctx context.Context, id string) error
 	// 更新状态
