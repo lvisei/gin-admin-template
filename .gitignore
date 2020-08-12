@@ -13,3 +13,15 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+*.DS_Store
+/cmd/gin-admin-template/gin-admin-template
+/cmd/gin-admin-template/data
+/release
+/data
+/internal/app/test/data
+/tmp
+
+# IDE configs
+.idea
+.vscode
