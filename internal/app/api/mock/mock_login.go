@@ -85,6 +85,19 @@ func (a *Login) GetUserInfo(c *gin.Context) {
 func (a *Login) QueryUserMenuTree(c *gin.Context) {
 }
 
+// UpdateUserInfo 更新个人用户信息
+// @Tags 登录管理
+// @Summary 更新个人用户信息
+// @Security ApiKeyAuth
+// @Param body body schema.UpdateUserParam true "请求参数"
+// @Success 200 {object} schema.StatusResult "{status:OK}"
+// @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
+// @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
+// @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
+// @Router /api/v1/pub/current/user [put]
+func (a *Login) UpdateUserInfo(c *gin.Context) {
+}
+
 // UpdatePassword 更新个人密码
 // @Tags 登录管理
 // @Summary 更新个人密码

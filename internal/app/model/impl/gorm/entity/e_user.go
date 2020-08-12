@@ -31,6 +31,7 @@ type User struct {
 	Password string  `gorm:"column:password;size:40;default:'';not null;"`        // 密码(sha1(md5(明文))加密)
 	Email    *string `gorm:"column:email;size:255;index;"`                        // 邮箱
 	Phone    *string `gorm:"column:phone;size:20;index;"`                         // 手机号
+	Avatar   string  `gorm:"column:avatar;type:text;"`                            // 头像
 	Status   int     `gorm:"column:status;index;default:0;not null;"`             // 状态(1:启用 2:停用)
 	Creator  string  `gorm:"column:creator;size:36;"`                             // 创建者
 }

@@ -140,6 +140,9 @@ func (a *Login) GetLoginInfo(ctx context.Context, userID string) (*schema.UserLo
 		UserID:   user.ID,
 		UserName: user.UserName,
 		RealName: user.RealName,
+		Phone:    user.Phone,
+		Email:    user.Email,
+		Avatar:   user.Avatar,
 	}
 
 	userRoleResult, err := a.UserRoleModel.Query(ctx, schema.UserRoleQueryParam{
@@ -171,7 +174,7 @@ func (a *Login) QueryUserMenuTree(ctx context.Context, userID string) (schema.Me
 		result, err := a.MenuModel.Query(ctx, schema.MenuQueryParam{
 			Status: 1,
 		}, schema.MenuQueryOptions{
-			OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
+			OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByASC)),
 		})
 		if err != nil {
 			return nil, err
@@ -238,6 +241,43 @@ func (a *Login) QueryUserMenuTree(ctx context.Context, userID string) (schema.Me
 		return nil, err
 	}
 	return menuResult.Data.FillMenuAction(menuActionResult.Data.ToMenuIDMap()).ToTree(), nil
+}
+
+// UpdateUserInfo 更新当前用户信息
+func (a *Login) UpdateUserInfo(ctx context.Context, userID string, item schema.UpdateUserParam) error {
+	if item.UserName == schema.GetRootUser().UserName {
+		return errors.New400Response("用户名不合法")
+	}
+
+	oldUser, err := a.checkAndGetUser(ctx, userID)
+	if err != nil {
+		return err
+	} else if oldUser.UserName != item.UserName {
+		result, err := a.UserModel.Query(ctx, schema.UserQueryParam{
+			PaginationParam: schema.PaginationParam{OnlyCount: true},
+			UserName:        item.UserName,
+		})
+		if err != nil {
+			return err
+		} else if result.PageResult.Total > 0 {
+			return errors.New400Response("用户名已经存在")
+		}
+	}
+
+	oldUser.UserName = item.UserName
+	oldUser.RealName = item.RealName
+	oldUser.Email = item.Email
+	oldUser.Phone = item.Phone
+	oldUser.Avatar = item.Avatar
+
+	newUser := *(oldUser)
+
+	err = a.UserModel.Update(ctx, userID, newUser)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // UpdatePassword 更新当前用户登录密码

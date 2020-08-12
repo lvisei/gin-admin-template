@@ -10,9 +10,9 @@ type Role struct {
 	Memo      string    `json:"memo"`                                  // 备注
 	Status    int       `json:"status" binding:"required,max=2,min=1"` // 状态(1:启用 2:禁用)
 	Creator   string    `json:"creator"`                               // 创建者
-	CreatedAt time.Time `json:"created_at"`                            // 创建时间
-	UpdatedAt time.Time `json:"updated_at"`                            // 更新时间
-	RoleMenus RoleMenus `json:"role_menus" binding:"required,gt=0"`    // 角色菜单列表
+	CreatedAt time.Time `json:"createdAt"`                             // 创建时间
+	UpdatedAt time.Time `json:"updatedAt"`                             // 更新时间
+	RoleMenus RoleMenus `json:"roleMenus" binding:"required,gt=0"`     // 角色菜单列表
 }
 
 // RoleQueryParam 查询条件
@@ -61,10 +61,10 @@ func (a Roles) ToMap() map[string]*Role {
 
 // RoleMenu 角色菜单对象
 type RoleMenu struct {
-	ID       string `json:"id"`                           // 唯一标识
-	RoleID   string `json:"role_id" binding:"required"`   // 角色ID
-	MenuID   string `json:"menu_id" binding:"required"`   // 菜单ID
-	ActionID string `json:"action_id" binding:"required"` // 动作ID
+	ID       string `json:"id"`                          // 唯一标识
+	RoleID   string `json:"roleId" binding:"required"`   // 角色ID
+	MenuID   string `json:"menuId" binding:"required"`   // 菜单ID
+	ActionID string `json:"actionId" binding:"required"` // 动作ID
 }
 
 // RoleMenuQueryParam 查询条件

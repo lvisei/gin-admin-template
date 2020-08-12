@@ -15,7 +15,7 @@ import (
 
 // 定义上下文中的键
 const (
-	prefix           = "gin-admin"
+	prefix           = "gin-admin-template"
 	UserIDKey        = prefix + "/user-id"
 	ReqBodyKey       = prefix + "/req-body"
 	ResBodyKey       = prefix + "/res-body"

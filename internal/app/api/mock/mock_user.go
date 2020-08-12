@@ -69,6 +69,21 @@ func (a *User) Create(c *gin.Context) {
 func (a *User) Update(c *gin.Context) {
 }
 
+// ResetPassword 重置密码
+// @Tags 用户管理
+// @Summary 重置密码
+// @Security ApiKeyAuth
+// @Accept plain
+// @Param id path string true "唯一标识"
+// @Param body body string true "更新数据"
+// @Success 200 {object} schema.User
+// @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
+// @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
+// @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
+// @Router /api/v1/users/{id}/rest [put]
+func (a *User) ResetPassword(c *gin.Context) {
+}
+
 // Delete 删除数据
 // @Tags 用户管理
 // @Summary 删除数据

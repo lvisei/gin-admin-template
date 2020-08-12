@@ -10,7 +10,9 @@
 | name        | 菜单名称 | 字符串   |               |
 | sequence    | 排序值   | 数值     |               |
 | icon        | 图标     | 字符串   |               |
-| router      | 访问路由 | 字符串   |               |
+| RouteName   | 路由名称 | 字符串   |               |
+| RoutePath   | 路由地址 | 字符串   |               |
+| Component   | 组件路径 | 字符串   |               |
 | memo        | 备注     | 字符串   |               |
 | show_status | 显示状态 | 数值     | 1:显示 2:隐藏 |
 | status      | 状态     | 数值     | 1:启用 2:禁用 |
@@ -82,6 +84,7 @@
 | real_name     | 真实姓名   | 字符串   |               |
 | email         | 邮箱       | 字符串   |               |
 | phone         | 手机号     | 字符串   |               |
+| Avatar        | 头像       | 字符串   |               |
 | status        | 状态       | 数值     | 1:启用 2:禁用 |
 | creator       | 创建人     | 字符串   |               |
 | created_at    | 创建时间   | 时间格式 |               |

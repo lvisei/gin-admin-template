@@ -17,5 +17,5 @@ package app
 // @name Authorization
 // @schemes http https
 // @basePath /
-// @contact.name LyricTian
-// @contact.email tiannianshou@gmail.com
+// @contact.name
+// @contact.email

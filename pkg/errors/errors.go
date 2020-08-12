@@ -27,6 +27,7 @@ var (
 
 	ErrNoPerm          = NewResponse(401, 401, "无访问权限")
 	ErrInvalidToken    = NewResponse(9999, 401, "令牌失效")
+	ErrExpiredToken    = NewResponse(9999, 401, "令牌已过期")
 	ErrNotFound        = NewResponse(404, 404, "资源不存在")
 	ErrMethodNotAllow  = NewResponse(405, 405, "方法不被允许")
 	ErrTooManyRequests = NewResponse(429, 429, "请求过于频繁")

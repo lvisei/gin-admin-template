@@ -44,7 +44,7 @@ func newWebCmd(ctx context.Context) *cli.Command {
 				Name:     "model",
 				Aliases:  []string{"m"},
 				Usage:    "casbin的访问控制模型(.conf)",
-				Required: true,
+				Required: false,
 			},
 			&cli.StringFlag{
 				Name:  "menu",

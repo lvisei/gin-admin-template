@@ -27,7 +27,7 @@ func (a *Menu) Query(c *gin.Context) {
 
 	params.Pagination = true
 	result, err := a.MenuBll.Query(ctx, params, schema.MenuQueryOptions{
-		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
+		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByASC)),
 	})
 	if err != nil {
 		ginplus.ResError(c, err)
@@ -46,7 +46,7 @@ func (a *Menu) QueryTree(c *gin.Context) {
 	}
 
 	result, err := a.MenuBll.Query(ctx, params, schema.MenuQueryOptions{
-		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
+		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByASC)),
 	})
 	if err != nil {
 		ginplus.ResError(c, err)

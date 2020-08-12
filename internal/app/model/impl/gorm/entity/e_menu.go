@@ -29,7 +29,9 @@ type Menu struct {
 	Name       string  `gorm:"column:name;size:50;index;default:'';not null;"` // 菜单名称
 	Sequence   int     `gorm:"column:sequence;index;default:0;not null;"`      // 排序值
 	Icon       *string `gorm:"column:icon;size:255;"`                          // 菜单图标
-	Router     *string `gorm:"column:router;size:255;"`                        // 访问路由
+	RouteName  *string `gorm:"column:route_name;size:255;"`                    // 路由名称
+	RoutePath  *string `gorm:"column:route_path;size:255;"`                    // 路由地址
+	Component  *string `gorm:"column:component;size:255;"`                     // 组件路径
 	ParentID   *string `gorm:"column:parent_id;size:36;index;"`                // 父级内码
 	ParentPath *string `gorm:"column:parent_path;size:518;index;"`             // 父级路径
 	ShowStatus int     `gorm:"column:show_status;index;default:0;not null;"`   // 状态(1:显示 2:隐藏)

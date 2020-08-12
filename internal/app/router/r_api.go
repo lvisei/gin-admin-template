@@ -34,10 +34,16 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gCurrent := pub.Group("current")
 			{
 				gCurrent.PUT("password", a.LoginAPI.UpdatePassword)
+				gCurrent.PUT("user", a.LoginAPI.UpdateUserInfo)
 				gCurrent.GET("user", a.LoginAPI.GetUserInfo)
 				gCurrent.GET("menutree", a.LoginAPI.QueryUserMenuTree)
 			}
 			pub.POST("/refresh-token", a.LoginAPI.RefreshToken)
+		}
+
+		gMock := v1.Group("mock")
+		{
+			gMock.GET("users", a.MockAPI.UserQuery)
 		}
 
 		gDemo := v1.Group("demos")
@@ -81,9 +87,15 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gUser.GET(":id", a.UserAPI.Get)
 			gUser.POST("", a.UserAPI.Create)
 			gUser.PUT(":id", a.UserAPI.Update)
+			gUser.PUT(":id/rest", a.UserAPI.ResetPassword)
 			gUser.DELETE(":id", a.UserAPI.Delete)
 			gUser.PATCH(":id/enable", a.UserAPI.Enable)
 			gUser.PATCH(":id/disable", a.UserAPI.Disable)
+		}
+
+		gSys := v1.Group("sys")
+		{
+			gSys.GET("logs/count", a.SysAPI.LogCount)
 		}
 	}
 }

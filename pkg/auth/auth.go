@@ -8,6 +8,7 @@ import (
 // 定义错误
 var (
 	ErrInvalidToken = errors.New("invalid token")
+	ErrExpiredToken = errors.New("expired token")
 )
 
 // TokenInfo 令牌信息
