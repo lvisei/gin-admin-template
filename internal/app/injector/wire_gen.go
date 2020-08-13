@@ -114,6 +114,15 @@ func BuildInjector() (*Injector, func(), error) {
 		UserBll: bllUser,
 	}
 	sys := &api.Sys{}
+	modelApi := &model.Api{
+		DB: db,
+	}
+	bllApi := &bll.Api{
+		ApiModel: modelApi,
+	}
+	apiApi := &api.Api{
+		ApiBll: bllApi,
+	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
@@ -124,6 +133,7 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleAPI:        apiRole,
 		UserAPI:        apiUser,
 		SysAPI:         sys,
+		ApiAPI:         apiApi,
 	}
 	engine := InitGinEngine(routerRouter)
 	injector := &Injector{
