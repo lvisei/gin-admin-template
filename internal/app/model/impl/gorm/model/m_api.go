@@ -34,7 +34,19 @@ func (a *Api) Query(ctx context.Context, params schema.ApiQueryParam, opts ...sc
 	opt := a.getQueryOption(opts...)
 
 	db := entity.GetApiDB(ctx, a.DB)
-	// TODO: 查询条件
+	if v := params.Group; v != "" {
+		db = db.Where("group=?", v)
+	}
+	if v := params.Path; v != "" {
+		db = db.Where("path=?", v)
+	}
+	if v := params.Method; v != "" {
+		db = db.Where("method=?", v)
+	}
+	if v := params.QueryValue; v != "" {
+		v = "%" + v + "%"
+		db = db.Where("group LIKE ? OR description LIKE ?", v, v)
+	}
 
 	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
 	db = db.Order(ParseOrder(opt.OrderFields))

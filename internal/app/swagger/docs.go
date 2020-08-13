@@ -18,16 +18,287 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
-        "contact": {
-            "name": "LyricTian",
-            "email": "tiannianshou@gmail.com"
-        },
+        "contact": {},
         "license": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/apis": {
+            "get": {
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "查询数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "分页索引",
+                        "name": "current",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "分页大小",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "查询值",
+                        "name": "queryValue",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "接口组",
+                        "name": "group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求路径",
+                        "name": "path",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求方式",
+                        "name": "method",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/schema.Api"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "创建数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "创建数据",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Api"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.IDResult"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:无效的请求参数}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/apis/{id}": {
+            "get": {
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "查询指定数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Api"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "404": {
+                        "description": "{error:{code:0,message:资源不存在}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "更新数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "更新数据",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Api"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:无效的请求参数}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "删除数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/demos": {
             "get": {
                 "security": [
@@ -865,6 +1136,54 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/schema.UserLoginInfo"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "登录管理"
+                ],
+                "summary": "更新个人用户信息",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.UpdateUserParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:无效的请求参数}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
                         }
                     },
                     "401": {
@@ -1772,9 +2091,111 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/api/v1/users/{id}/rest": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "重置密码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "更新数据",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.User"
+                        }
+                    },
+                    "400": {
+                        "description": "{error:{code:0,message:无效的请求参数}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "schema.Api": {
+            "type": "object",
+            "required": [
+                "group",
+                "method",
+                "path"
+            ],
+            "properties": {
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建者",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "接口描述",
+                    "type": "string"
+                },
+                "group": {
+                    "description": "接口组",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "唯一标识",
+                    "type": "string"
+                },
+                "method": {
+                    "description": "资源请求方式(支持正则)",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "资源请求路径（支持/:id匹配）",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
         "schema.Demo": {
             "type": "object",
             "required": [
@@ -1787,7 +2208,7 @@ var doc = `{
                     "description": "编号",
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
@@ -1811,7 +2232,7 @@ var doc = `{
                     "description": "状态(1:启用 2:停用)",
                     "type": "integer"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "description": "更新时间",
                     "type": "string"
                 }
@@ -1851,7 +2272,7 @@ var doc = `{
         "schema.LoginCaptcha": {
             "type": "object",
             "properties": {
-                "captcha_id": {
+                "captchaId": {
                     "description": "验证码ID",
                     "type": "string"
                 }
@@ -1860,17 +2281,17 @@ var doc = `{
         "schema.LoginParam": {
             "type": "object",
             "required": [
-                "captcha_code",
-                "captcha_id",
+                "captchaCode",
+                "captchaId",
                 "password",
-                "user_name"
+                "userName"
             ],
             "properties": {
-                "captcha_code": {
+                "captchaCode": {
                     "description": "验证码",
                     "type": "string"
                 },
-                "captcha_id": {
+                "captchaId": {
                     "description": "验证码ID",
                     "type": "string"
                 },
@@ -1878,7 +2299,7 @@ var doc = `{
                     "description": "密码(md5加密)",
                     "type": "string"
                 },
-                "user_name": {
+                "userName": {
                     "description": "用户名",
                     "type": "string"
                 }
@@ -1887,15 +2308,15 @@ var doc = `{
         "schema.LoginTokenInfo": {
             "type": "object",
             "properties": {
-                "access_token": {
+                "accessToken": {
                     "description": "访问令牌",
                     "type": "string"
                 },
-                "expires_at": {
+                "expiresAt": {
                     "description": "令牌到期时间戳",
                     "type": "integer"
                 },
-                "token_type": {
+                "tokenType": {
                     "description": "令牌类型",
                     "type": "string"
                 }
@@ -1905,7 +2326,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "name",
-                "show_status",
+                "showStatus",
                 "status"
             ],
             "properties": {
@@ -1914,7 +2335,11 @@ var doc = `{
                     "type": "object",
                     "$ref": "#/definitions/schema.MenuActions"
                 },
-                "created_at": {
+                "component": {
+                    "description": "组件路径",
+                    "type": "string"
+                },
+                "createdAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
@@ -1938,23 +2363,27 @@ var doc = `{
                     "description": "菜单名称",
                     "type": "string"
                 },
-                "parent_id": {
+                "parentId": {
                     "description": "父级ID",
                     "type": "string"
                 },
-                "parent_path": {
+                "parentPath": {
                     "description": "父级路径",
                     "type": "string"
                 },
-                "router": {
-                    "description": "访问路由",
+                "routeName": {
+                    "description": "路由名称",
+                    "type": "string"
+                },
+                "routePath": {
+                    "description": "路由地址",
                     "type": "string"
                 },
                 "sequence": {
                     "description": "排序值",
                     "type": "integer"
                 },
-                "show_status": {
+                "showStatus": {
                     "description": "显示状态(1:显示 2:隐藏)",
                     "type": "integer"
                 },
@@ -1962,7 +2391,7 @@ var doc = `{
                     "description": "状态(1:启用 2:禁用)",
                     "type": "integer"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "description": "更新时间",
                     "type": "string"
                 }
@@ -1972,7 +2401,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "code",
-                "menu_id",
+                "menuId",
                 "name"
             ],
             "properties": {
@@ -1984,7 +2413,7 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
-                "menu_id": {
+                "menuId": {
                     "description": "菜单ID",
                     "type": "string"
                 },
@@ -2006,7 +2435,7 @@ var doc = `{
                 "path"
             ],
             "properties": {
-                "action_id": {
+                "actionId": {
                     "description": "菜单动作ID",
                     "type": "string"
                 },
@@ -2049,6 +2478,10 @@ var doc = `{
                     "type": "object",
                     "$ref": "#/definitions/schema.MenuTrees"
                 },
+                "component": {
+                    "description": "组件路径",
+                    "type": "string"
+                },
                 "icon": {
                     "description": "菜单图标",
                     "type": "string"
@@ -2061,23 +2494,27 @@ var doc = `{
                     "description": "菜单名称",
                     "type": "string"
                 },
-                "parent_id": {
+                "parentId": {
                     "description": "父级ID",
                     "type": "string"
                 },
-                "parent_path": {
+                "parentPath": {
                     "description": "父级路径",
                     "type": "string"
                 },
-                "router": {
-                    "description": "访问路由",
+                "routeName": {
+                    "description": "路由名称",
+                    "type": "string"
+                },
+                "routePath": {
+                    "description": "路由地址",
                     "type": "string"
                 },
                 "sequence": {
                     "description": "排序值",
                     "type": "integer"
                 },
-                "show_status": {
+                "showStatus": {
                     "description": "显示状态(1:显示 2:隐藏)",
                     "type": "integer"
                 },
@@ -2097,11 +2534,11 @@ var doc = `{
             "type": "object",
             "required": [
                 "name",
-                "role_menus",
+                "roleMenus",
                 "status"
             ],
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
@@ -2121,7 +2558,7 @@ var doc = `{
                     "description": "角色名称",
                     "type": "string"
                 },
-                "role_menus": {
+                "roleMenus": {
                     "description": "角色菜单列表",
                     "type": "object",
                     "$ref": "#/definitions/schema.RoleMenus"
@@ -2134,7 +2571,7 @@ var doc = `{
                     "description": "状态(1:启用 2:禁用)",
                     "type": "integer"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "description": "更新时间",
                     "type": "string"
                 }
@@ -2143,12 +2580,12 @@ var doc = `{
         "schema.RoleMenu": {
             "type": "object",
             "required": [
-                "action_id",
-                "menu_id",
-                "role_id"
+                "actionId",
+                "menuId",
+                "roleId"
             ],
             "properties": {
-                "action_id": {
+                "actionId": {
                     "description": "动作ID",
                     "type": "string"
                 },
@@ -2156,11 +2593,11 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
-                "menu_id": {
+                "menuId": {
                     "description": "菜单ID",
                     "type": "string"
                 },
-                "role_id": {
+                "roleId": {
                     "description": "角色ID",
                     "type": "string"
                 }
@@ -2190,16 +2627,45 @@ var doc = `{
         "schema.UpdatePasswordParam": {
             "type": "object",
             "required": [
-                "new_password",
-                "old_password"
+                "newPassword",
+                "oldPassword"
             ],
             "properties": {
-                "new_password": {
+                "newPassword": {
                     "description": "新密码(md5加密)",
                     "type": "string"
                 },
-                "old_password": {
+                "oldPassword": {
                     "description": "旧密码(md5加密)",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.UpdateUserParam": {
+            "type": "object",
+            "required": [
+                "realName",
+                "userName"
+            ],
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -2207,13 +2673,17 @@ var doc = `{
         "schema.User": {
             "type": "object",
             "required": [
-                "real_name",
+                "realName",
                 "status",
-                "user_name",
-                "user_roles"
+                "userName",
+                "userRoles"
             ],
             "properties": {
-                "created_at": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "createdAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
@@ -2237,7 +2707,7 @@ var doc = `{
                     "description": "手机号",
                     "type": "string"
                 },
-                "real_name": {
+                "realName": {
                     "description": "真实姓名",
                     "type": "string"
                 },
@@ -2245,11 +2715,11 @@ var doc = `{
                     "description": "用户状态(1:启用 2:停用)",
                     "type": "integer"
                 },
-                "user_name": {
+                "userName": {
                     "description": "用户名",
                     "type": "string"
                 },
-                "user_roles": {
+                "userRoles": {
                     "description": "角色授权",
                     "type": "object",
                     "$ref": "#/definitions/schema.UserRoles"
@@ -2259,7 +2729,19 @@ var doc = `{
         "schema.UserLoginInfo": {
             "type": "object",
             "properties": {
-                "real_name": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "realName": {
                     "description": "真实姓名",
                     "type": "string"
                 },
@@ -2268,11 +2750,11 @@ var doc = `{
                     "type": "object",
                     "$ref": "#/definitions/schema.Roles"
                 },
-                "user_id": {
+                "userId": {
                     "description": "用户ID",
                     "type": "string"
                 },
-                "user_name": {
+                "userName": {
                     "description": "用户名",
                     "type": "string"
                 }
@@ -2285,11 +2767,11 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
-                "role_id": {
+                "roleId": {
                     "description": "角色ID",
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "description": "用户ID",
                     "type": "string"
                 }
@@ -2304,7 +2786,7 @@ var doc = `{
         "schema.UserShow": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
@@ -2320,7 +2802,7 @@ var doc = `{
                     "description": "手机号",
                     "type": "string"
                 },
-                "real_name": {
+                "realName": {
                     "description": "真实姓名",
                     "type": "string"
                 },
@@ -2335,7 +2817,7 @@ var doc = `{
                     "description": "用户状态(1:启用 2:停用)",
                     "type": "integer"
                 },
-                "user_name": {
+                "userName": {
                     "description": "用户名",
                     "type": "string"
                 }
@@ -2362,11 +2844,11 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "6.3.1",
+	Version:     "6.4.2",
 	Host:        "",
 	BasePath:    "/",
 	Schemes:     []string{"http", "https"},
-	Title:       "gin-admin",
+	Title:       "gin-admin-template",
 	Description: "RBAC scaffolding based on GIN + GORM/MONGO + CASBIN + WIRE.",
 }
 

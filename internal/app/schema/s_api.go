@@ -26,6 +26,10 @@ func (a *Api) String() string {
 // ApiQueryParam 查询条件
 type ApiQueryParam struct {
 	PaginationParam
+	QueryValue string `form:"queryValue"` // 模糊查询
+	Group      string `form:"group"`      // 接口组
+	Path       string `form:"path"`       // 资源请求路径（支持/:id匹配）
+	Method     string `form:"method"`     // 资源请求方式(支持正则)
 }
 
 // ApiQueryOptions 查询可选参数项
