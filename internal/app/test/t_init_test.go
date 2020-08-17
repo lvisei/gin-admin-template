@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"gin-admin-template/internal/app/config"
 	"gin-admin-template/internal/app/injector"
@@ -48,7 +49,14 @@ type ResID struct {
 
 func toReader(v interface{}) io.Reader {
 	buf := new(bytes.Buffer)
-	_ = json.NewEncoder(buf).Encode(v)
+
+	switch v.(type) {
+	case string:
+		buf.ReadFrom(strings.NewReader(v.(string)))
+	default:
+		_ = json.NewEncoder(buf).Encode(v)
+	}
+
 	return buf
 }
 

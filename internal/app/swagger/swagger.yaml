@@ -31,6 +31,25 @@ definitions:
     - method
     - path
     type: object
+  schema.ApiCreateParams:
+    properties:
+      description:
+        description: 接口描述
+        type: string
+      group:
+        description: 接口组
+        type: string
+      method:
+        description: 资源请求方式(支持正则)
+        type: string
+      path:
+        description: 资源请求路径（支持/:id匹配）
+        type: string
+    required:
+    - group
+    - method
+    - path
+    type: object
   schema.Demo:
     properties:
       code:
@@ -558,7 +577,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.Api'
+          $ref: '#/definitions/schema.ApiCreateParams'
       responses:
         "200":
           description: OK
@@ -654,7 +673,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.Api'
+          $ref: '#/definitions/schema.ApiCreateParams'
       responses:
         "200":
           description: '{status:OK}'

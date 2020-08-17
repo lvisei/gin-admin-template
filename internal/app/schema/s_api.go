@@ -6,16 +6,21 @@ import (
 	"gin-admin-template/pkg/util"
 )
 
+// ApiCreateParams 新增参数
+type ApiCreateParams struct {
+	Group       string `json:"group" binding:"required"`  // 接口组
+	Path        string `json:"path" binding:"required"`   // 资源请求路径（支持/:id匹配）
+	Method      string `json:"method" binding:"required"` // 资源请求方式(支持正则)
+	Description string `json:"description"`               // 接口描述
+}
+
 // Api 接口管理对象
 type Api struct {
-	ID          string    `json:"id"`                        // 唯一标识
-	Group       string    `json:"group" binding:"required"`  // 接口组
-	Path        string    `json:"path" binding:"required"`   // 资源请求路径（支持/:id匹配）
-	Method      string    `json:"method" binding:"required"` // 资源请求方式(支持正则)
-	Description string    `json:"description"`               // 接口描述
-	Creator     string    `json:"creator"`                   // 创建者
-	CreatedAt   time.Time `json:"created_at"`                // 创建时间
-	UpdatedAt   time.Time `json:"updated_at"`                // 更新时间
+	ApiCreateParams
+	ID        string    `json:"id"`         // 唯一标识
+	Creator   string    `json:"creator"`    // 创建者
+	CreatedAt time.Time `json:"created_at"` // 创建时间
+	UpdatedAt time.Time `json:"updated_at"` // 更新时间
 
 }
 

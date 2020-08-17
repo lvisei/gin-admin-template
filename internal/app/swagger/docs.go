@@ -121,7 +121,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.Api"
+                            "$ref": "#/definitions/schema.ApiCreateParams"
                         }
                     }
                 ],
@@ -226,7 +226,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.Api"
+                            "$ref": "#/definitions/schema.ApiCreateParams"
                         }
                     }
                 ],
@@ -2192,6 +2192,32 @@ var doc = `{
                 },
                 "updated_at": {
                     "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.ApiCreateParams": {
+            "type": "object",
+            "required": [
+                "group",
+                "method",
+                "path"
+            ],
+            "properties": {
+                "description": {
+                    "description": "接口描述",
+                    "type": "string"
+                },
+                "group": {
+                    "description": "接口组",
+                    "type": "string"
+                },
+                "method": {
+                    "description": "资源请求方式(支持正则)",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "资源请求路径（支持/:id匹配）",
                     "type": "string"
                 }
             }

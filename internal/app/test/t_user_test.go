@@ -80,6 +80,13 @@ func TestUser(t *testing.T) {
 	err = parseOK(w.Body)
 	assert.Nil(t, err)
 
+	// put /user/:id/rest
+	password := unique.MustUUID().String()
+	engine.ServeHTTP(w, newPutRequest("%s/%s/rest", password, router, getItem.ID))
+	assert.Equal(t, 200, w.Code)
+	err = parseOK(w.Body)
+	assert.Nil(t, err)
+
 	// query /users
 	engine.ServeHTTP(w, newGetRequest(router, newPageParam()))
 	assert.Equal(t, 200, w.Code)
