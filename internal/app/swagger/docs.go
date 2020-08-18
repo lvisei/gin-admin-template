@@ -728,7 +728,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.Menu"
+                            "$ref": "#/definitions/schema.MenuCreateParams"
                         }
                     }
                 ],
@@ -881,7 +881,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.Menu"
+                            "$ref": "#/definitions/schema.MenuCreateParams"
                         }
                     }
                 ],
@@ -1430,7 +1430,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.Role"
+                            "$ref": "#/definitions/schema.RoleCreateParams"
                         }
                     }
                 ],
@@ -1589,7 +1589,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.Role"
+                            "$ref": "#/definitions/schema.RoleCreateParams"
                         }
                     }
                 ],
@@ -1833,7 +1833,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.User"
+                            "$ref": "#/definitions/schema.UserCreateParams"
                         }
                     }
                 ],
@@ -1936,7 +1936,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.User"
+                            "$ref": "#/definitions/schema.UserCreateParams"
                         }
                     }
                 ],
@@ -2491,6 +2491,61 @@ var doc = `{
                 "$ref": "#/definitions/schema.MenuAction"
             }
         },
+        "schema.MenuCreateParams": {
+            "type": "object",
+            "required": [
+                "name",
+                "showStatus",
+                "status"
+            ],
+            "properties": {
+                "actions": {
+                    "description": "动作列表",
+                    "type": "object",
+                    "$ref": "#/definitions/schema.MenuActions"
+                },
+                "component": {
+                    "description": "组件路径",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "菜单图标",
+                    "type": "string"
+                },
+                "memo": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "parentId": {
+                    "description": "父级ID",
+                    "type": "string"
+                },
+                "routeName": {
+                    "description": "路由名称",
+                    "type": "string"
+                },
+                "routePath": {
+                    "description": "路由地址",
+                    "type": "string"
+                },
+                "sequence": {
+                    "description": "排序值",
+                    "type": "integer"
+                },
+                "showStatus": {
+                    "description": "显示状态(1:显示 2:隐藏)",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态(1:启用 2:禁用)",
+                    "type": "integer"
+                }
+            }
+        },
         "schema.MenuTree": {
             "type": "object",
             "properties": {
@@ -2600,6 +2655,37 @@ var doc = `{
                 "updatedAt": {
                     "description": "更新时间",
                     "type": "string"
+                }
+            }
+        },
+        "schema.RoleCreateParams": {
+            "type": "object",
+            "required": [
+                "name",
+                "roleMenus",
+                "status"
+            ],
+            "properties": {
+                "memo": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "角色名称",
+                    "type": "string"
+                },
+                "roleMenus": {
+                    "description": "角色菜单列表",
+                    "type": "object",
+                    "$ref": "#/definitions/schema.RoleMenus"
+                },
+                "sequence": {
+                    "description": "排序值",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态(1:启用 2:禁用)",
+                    "type": "integer"
                 }
             }
         },
@@ -2723,6 +2809,50 @@ var doc = `{
                 },
                 "id": {
                     "description": "唯一标识",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "realName": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "用户状态(1:启用 2:停用)",
+                    "type": "integer"
+                },
+                "userName": {
+                    "description": "用户名",
+                    "type": "string"
+                },
+                "userRoles": {
+                    "description": "角色授权",
+                    "type": "object",
+                    "$ref": "#/definitions/schema.UserRoles"
+                }
+            }
+        },
+        "schema.UserCreateParams": {
+            "type": "object",
+            "required": [
+                "realName",
+                "status",
+                "userName",
+                "userRoles"
+            ],
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
                     "type": "string"
                 },
                 "password": {

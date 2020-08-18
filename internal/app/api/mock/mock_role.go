@@ -58,7 +58,7 @@ func (a *Role) Get(c *gin.Context) {
 // @Tags 角色管理
 // @Summary 创建数据
 // @Security ApiKeyAuth
-// @Param body body schema.Role true "创建数据"
+// @Param body body schema.RoleCreateParams true "创建数据"
 // @Success 200 {object} schema.IDResult
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
@@ -72,7 +72,7 @@ func (a *Role) Create(c *gin.Context) {
 // @Summary 更新数据
 // @Security ApiKeyAuth
 // @Param id path string true "唯一标识"
-// @Param body body schema.Role true "更新数据"
+// @Param body body schema.RoleCreateParams true "更新数据"
 // @Success 200 {object} schema.Role
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
