@@ -17,7 +17,7 @@ func TestUser(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	// post /menus
-	addMenuItem := &schema.Menu{
+	addMenuItem := &schema.MenuCreateParams{
 		Name:       unique.MustUUID().String(),
 		ShowStatus: 1,
 		Status:     1,
@@ -29,7 +29,7 @@ func TestUser(t *testing.T) {
 	assert.Nil(t, err)
 
 	// post /roles
-	addRoleItem := &schema.Role{
+	addRoleItem := &schema.RoleCreateParams{
 		Name:   unique.MustUUID().String(),
 		Status: 1,
 		RoleMenus: schema.RoleMenus{
@@ -45,7 +45,7 @@ func TestUser(t *testing.T) {
 	assert.Nil(t, err)
 
 	// post /users
-	addItem := &schema.User{
+	addItem := &schema.UserCreateParams{
 		UserName: unique.MustUUID().String(),
 		RealName: unique.MustUUID().String(),
 		Status:   1,

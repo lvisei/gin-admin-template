@@ -245,6 +245,47 @@ definitions:
     items:
       $ref: '#/definitions/schema.MenuAction'
     type: array
+  schema.MenuCreateParams:
+    properties:
+      actions:
+        $ref: '#/definitions/schema.MenuActions'
+        description: 动作列表
+        type: object
+      component:
+        description: 组件路径
+        type: string
+      icon:
+        description: 菜单图标
+        type: string
+      memo:
+        description: 备注
+        type: string
+      name:
+        description: 菜单名称
+        type: string
+      parentId:
+        description: 父级ID
+        type: string
+      routeName:
+        description: 路由名称
+        type: string
+      routePath:
+        description: 路由地址
+        type: string
+      sequence:
+        description: 排序值
+        type: integer
+      showStatus:
+        description: 显示状态(1:显示 2:隐藏)
+        type: integer
+      status:
+        description: 状态(1:启用 2:禁用)
+        type: integer
+    required:
+    - name
+    - showStatus
+    - status
+    type: object
   schema.MenuTree:
     properties:
       actions:
@@ -323,6 +364,29 @@ definitions:
       updatedAt:
         description: 更新时间
         type: string
+    required:
+    - name
+    - roleMenus
+    - status
+    type: object
+  schema.RoleCreateParams:
+    properties:
+      memo:
+        description: 备注
+        type: string
+      name:
+        description: 角色名称
+        type: string
+      roleMenus:
+        $ref: '#/definitions/schema.RoleMenus'
+        description: 角色菜单列表
+        type: object
+      sequence:
+        description: 排序值
+        type: integer
+      status:
+        description: 状态(1:启用 2:禁用)
+        type: integer
     required:
     - name
     - roleMenus
@@ -410,6 +474,39 @@ definitions:
         type: string
       id:
         description: 唯一标识
+        type: string
+      password:
+        description: 密码
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      realName:
+        description: 真实姓名
+        type: string
+      status:
+        description: 用户状态(1:启用 2:停用)
+        type: integer
+      userName:
+        description: 用户名
+        type: string
+      userRoles:
+        $ref: '#/definitions/schema.UserRoles'
+        description: 角色授权
+        type: object
+    required:
+    - realName
+    - status
+    - userName
+    - userRoles
+    type: object
+  schema.UserCreateParams:
+    properties:
+      avatar:
+        description: 头像
+        type: string
+      email:
+        description: 邮箱
         type: string
       password:
         description: 密码
@@ -963,7 +1060,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.Menu'
+          $ref: '#/definitions/schema.MenuCreateParams'
       responses:
         "200":
           description: OK
@@ -1084,7 +1181,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.Menu'
+          $ref: '#/definitions/schema.MenuCreateParams'
       responses:
         "200":
           description: '{status:OK}'
@@ -1403,7 +1500,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.Role'
+          $ref: '#/definitions/schema.RoleCreateParams'
       responses:
         "200":
           description: OK
@@ -1528,7 +1625,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.Role'
+          $ref: '#/definitions/schema.RoleCreateParams'
       responses:
         "200":
           description: OK
@@ -1657,7 +1754,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.User'
+          $ref: '#/definitions/schema.UserCreateParams'
       responses:
         "200":
           description: OK
@@ -1747,7 +1844,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.User'
+          $ref: '#/definitions/schema.UserCreateParams'
       responses:
         "200":
           description: OK

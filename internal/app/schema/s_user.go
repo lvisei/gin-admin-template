@@ -12,10 +12,12 @@ import (
 func GetRootUser() *User {
 	user := config.C.Root
 	return &User{
-		ID:       user.UserName,
-		UserName: user.UserName,
-		RealName: user.RealName,
-		Password: util.SHA1HashString(user.Password),
+		ID: user.UserName,
+		UserCreateParams: UserCreateParams{
+			UserName: user.UserName,
+			RealName: user.RealName,
+			Password: util.SHA1HashString(user.Password),
+		},
 	}
 }
 
@@ -24,9 +26,8 @@ func CheckIsRootUser(ctx context.Context, userID string) bool {
 	return GetRootUser().ID == userID
 }
 
-// User 用户对象
-type User struct {
-	ID        string    `json:"id"`                                    // 唯一标识
+// UserCreateParams 新增参数
+type UserCreateParams struct {
 	UserName  string    `json:"userName" binding:"required"`           // 用户名
 	RealName  string    `json:"realName" binding:"required"`           // 真实姓名
 	Password  string    `json:"password"`                              // 密码
@@ -34,9 +35,16 @@ type User struct {
 	Email     string    `json:"email"`                                 // 邮箱
 	Avatar    string    `json:"avatar"`                                // 头像
 	Status    int       `json:"status" binding:"required,max=2,min=1"` // 用户状态(1:启用 2:停用)
-	Creator   string    `json:"creator"`                               // 创建者
-	CreatedAt time.Time `json:"createdAt"`                             // 创建时间
 	UserRoles UserRoles `json:"userRoles" binding:"required,gt=0"`     // 角色授权
+}
+
+// User 用户对象
+type User struct {
+	UserCreateParams
+	ID        string    `json:"id"`        // 唯一标识
+	Creator   string    `json:"creator"`   // 创建者
+	CreatedAt time.Time `json:"createdAt"` // 创建时间
+
 }
 
 func (a *User) String() string {

@@ -31,6 +31,21 @@ func (a *Menu) String() string {
 	return util.JSONMarshalToString(a)
 }
 
+// MenuCreateParams 新增参数
+type MenuCreateParams struct {
+	Name       string      `json:"name" binding:"required"`                   // 菜单名称
+	Sequence   int         `json:"sequence"`                                  // 排序值
+	Icon       string      `json:"icon"`                                      // 菜单图标
+	RouteName  string      `json:"routeName"`                                 // 路由名称
+	RoutePath  string      `json:"routePath"`                                 // 路由地址
+	Component  string      `json:"component"`                                 // 组件路径
+	ParentID   string      `json:"parentId"`                                  // 父级ID
+	ShowStatus int         `json:"showStatus" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
+	Status     int         `json:"status" binding:"required,max=2,min=1"`     // 状态(1:启用 2:禁用)
+	Memo       string      `json:"memo"`                                      // 备注
+	Actions    MenuActions `json:"actions"`                                   // 动作列表
+}
+
 // MenuQueryParam 查询条件
 type MenuQueryParam struct {
 	PaginationParam

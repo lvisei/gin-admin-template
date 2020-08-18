@@ -16,7 +16,7 @@ func TestRole(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	// post /menus
-	addMenuItem := &schema.Menu{
+	addMenuItem := &schema.MenuCreateParams{
 		Name:       unique.MustUUID().String(),
 		ShowStatus: 1,
 		Status:     1,
@@ -28,15 +28,14 @@ func TestRole(t *testing.T) {
 	assert.Nil(t, err)
 
 	// post /roles
-	addItem := &schema.Role{
+	addItem := &schema.RoleCreateParams{
 		Name:   unique.MustUUID().String(),
 		Status: 1,
 		RoleMenus: schema.RoleMenus{
 			&schema.RoleMenu{
 				MenuID: addMenuItemRes.ID,
 			},
-		},
-	}
+		}}
 	engine.ServeHTTP(w, newPostRequest(router, addItem))
 	assert.Equal(t, 200, w.Code)
 	var addItemRes ResID

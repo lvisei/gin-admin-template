@@ -16,7 +16,7 @@ func TestMenu(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	// post /menus
-	addItem := &schema.Menu{
+	addItem := &schema.MenuCreateParams{
 		Name:       unique.MustUUID().String(),
 		ShowStatus: 1,
 		Status:     1,

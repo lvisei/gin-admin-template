@@ -46,7 +46,7 @@ func (a *User) Get(c *gin.Context) {
 // @Tags 用户管理
 // @Summary 创建数据
 // @Security ApiKeyAuth
-// @Param body body schema.User true "创建数据"
+// @Param body body schema.UserCreateParams true "创建数据"
 // @Success 200 {object} schema.IDResult
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
@@ -60,7 +60,7 @@ func (a *User) Create(c *gin.Context) {
 // @Summary 更新数据
 // @Security ApiKeyAuth
 // @Param id path string true "唯一标识"
-// @Param body body schema.User true "更新数据"
+// @Param body body schema.UserCreateParams true "更新数据"
 // @Success 200 {object} schema.User
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"

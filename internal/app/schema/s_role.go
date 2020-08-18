@@ -2,17 +2,23 @@ package schema
 
 import "time"
 
-// Role 角色对象
-type Role struct {
-	ID        string    `json:"id"`                                    // 唯一标识
+// RoleCreateParams 新增参数
+type RoleCreateParams struct {
 	Name      string    `json:"name" binding:"required"`               // 角色名称
 	Sequence  int       `json:"sequence"`                              // 排序值
 	Memo      string    `json:"memo"`                                  // 备注
 	Status    int       `json:"status" binding:"required,max=2,min=1"` // 状态(1:启用 2:禁用)
-	Creator   string    `json:"creator"`                               // 创建者
-	CreatedAt time.Time `json:"createdAt"`                             // 创建时间
-	UpdatedAt time.Time `json:"updatedAt"`                             // 更新时间
 	RoleMenus RoleMenus `json:"roleMenus" binding:"required,gt=0"`     // 角色菜单列表
+}
+
+// Role 角色对象
+type Role struct {
+	RoleCreateParams
+	ID        string    `json:"id"`        // 唯一标识
+	Creator   string    `json:"creator"`   // 创建者
+	CreatedAt time.Time `json:"createdAt"` // 创建时间
+	UpdatedAt time.Time `json:"updatedAt"` // 更新时间
+
 }
 
 // RoleQueryParam 查询条件
