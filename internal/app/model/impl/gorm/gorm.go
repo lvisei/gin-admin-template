@@ -69,12 +69,13 @@ func AutoMigrate(db *gorm.DB) error {
 	return db.AutoMigrate(
 		new(entity.Demo),
 		new(entity.MenuAction),
+		new(entity.MenuResource),
 		new(entity.MenuActionResource),
 		new(entity.Menu),
 		new(entity.RoleMenu),
 		new(entity.Role),
 		new(entity.UserRole),
 		new(entity.User),
-		new(entity.Api),
+		new(entity.Resource),
 	).Error
 }

@@ -98,13 +98,13 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gSys.GET("logs/count", a.SysAPI.LogCount)
 		}
 
-		gApi := v1.Group("apis")
+		gResource := v1.Group("resources")
 		{
-			gApi.GET("", a.ApiAPI.Query)
-			gApi.GET(":id", a.ApiAPI.Get)
-			gApi.POST("", a.ApiAPI.Create)
-			gApi.PUT(":id", a.ApiAPI.Update)
-			gApi.DELETE(":id", a.ApiAPI.Delete)
+			gResource.GET("", a.ResourceAPI.Query)
+			gResource.GET(":id", a.ResourceAPI.Get)
+			gResource.POST("", a.ResourceAPI.Create)
+			gResource.PUT(":id", a.ResourceAPI.Update)
+			gResource.DELETE(":id", a.ResourceAPI.Delete)
 		}
 
 	}

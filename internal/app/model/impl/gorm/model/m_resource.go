@@ -11,18 +11,18 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-var _ model.IApi = (*Api)(nil)
+var _ model.IResource = (*Resource)(nil)
 
-// ApiSet 注入Api
-var ApiSet = wire.NewSet(wire.Struct(new(Api), "*"), wire.Bind(new(model.IApi), new(*Api)))
+// ResourceSet 注入Resource
+var ResourceSet = wire.NewSet(wire.Struct(new(Resource), "*"), wire.Bind(new(model.IResource), new(*Resource)))
 
-// Api 接口管理存储
-type Api struct {
+// Resource 资源管理存储
+type Resource struct {
 	DB *gorm.DB
 }
 
-func (a *Api) getQueryOption(opts ...schema.ApiQueryOptions) schema.ApiQueryOptions {
-	var opt schema.ApiQueryOptions
+func (a *Resource) getQueryOption(opts ...schema.ResourceQueryOptions) schema.ResourceQueryOptions {
+	var opt schema.ResourceQueryOptions
 	if len(opts) > 0 {
 		opt = opts[0]
 	}
@@ -30,10 +30,10 @@ func (a *Api) getQueryOption(opts ...schema.ApiQueryOptions) schema.ApiQueryOpti
 }
 
 // Query 查询数据
-func (a *Api) Query(ctx context.Context, params schema.ApiQueryParam, opts ...schema.ApiQueryOptions) (*schema.ApiQueryResult, error) {
+func (a *Resource) Query(ctx context.Context, params schema.ResourceQueryParam, opts ...schema.ResourceQueryOptions) (*schema.ResourceQueryResult, error) {
 	opt := a.getQueryOption(opts...)
 
-	db := entity.GetApiDB(ctx, a.DB)
+	db := entity.GetResourceDB(ctx, a.DB)
 	if v := params.Group; v != "" {
 		db = db.Where("group=?", v)
 	}
@@ -51,23 +51,23 @@ func (a *Api) Query(ctx context.Context, params schema.ApiQueryParam, opts ...sc
 	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
 	db = db.Order(ParseOrder(opt.OrderFields))
 
-	var list entity.Apis
+	var list entity.Resources
 	pr, err := WrapPageQuery(ctx, db, params.PaginationParam, &list)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
-	qr := &schema.ApiQueryResult{
+	qr := &schema.ResourceQueryResult{
 		PageResult: pr,
-		Data:       list.ToSchemaApis(),
+		Data:       list.ToSchemaResources(),
 	}
 
 	return qr, nil
 }
 
 // Get 查询指定数据
-func (a *Api) Get(ctx context.Context, id string, opts ...schema.ApiGetOptions) (*schema.Api, error) {
-	db := entity.GetApiDB(ctx, a.DB).Where("id=?", id)
-	var item entity.Api
+func (a *Resource) Get(ctx context.Context, id string, opts ...schema.ResourceGetOptions) (*schema.Resource, error) {
+	db := entity.GetResourceDB(ctx, a.DB).Where("id=?", id)
+	var item entity.Resource
 	ok, err := FindOne(ctx, db, &item)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -75,13 +75,13 @@ func (a *Api) Get(ctx context.Context, id string, opts ...schema.ApiGetOptions) 
 		return nil, nil
 	}
 
-	return item.ToSchemaApi(), nil
+	return item.ToSchemaResource(), nil
 }
 
 // Create 创建数据
-func (a *Api) Create(ctx context.Context, item schema.Api) error {
-	eitem := entity.SchemaApi(item).ToApi()
-	result := entity.GetApiDB(ctx, a.DB).Create(eitem)
+func (a *Resource) Create(ctx context.Context, item schema.Resource) error {
+	eitem := entity.SchemaResource(item).ToResource()
+	result := entity.GetResourceDB(ctx, a.DB).Create(eitem)
 	if err := result.Error; err != nil {
 		return errors.WithStack(err)
 	}
@@ -89,9 +89,9 @@ func (a *Api) Create(ctx context.Context, item schema.Api) error {
 }
 
 // Update 更新数据
-func (a *Api) Update(ctx context.Context, id string, item schema.Api) error {
-	eitem := entity.SchemaApi(item).ToApi()
-	result := entity.GetApiDB(ctx, a.DB).Where("id=?", id).Updates(eitem)
+func (a *Resource) Update(ctx context.Context, id string, item schema.Resource) error {
+	eitem := entity.SchemaResource(item).ToResource()
+	result := entity.GetResourceDB(ctx, a.DB).Where("id=?", id).Updates(eitem)
 	if err := result.Error; err != nil {
 		return errors.WithStack(err)
 	}
@@ -99,8 +99,8 @@ func (a *Api) Update(ctx context.Context, id string, item schema.Api) error {
 }
 
 // Delete 删除数据
-func (a *Api) Delete(ctx context.Context, id string) error {
-	result := entity.GetApiDB(ctx, a.DB).Where("id=?", id).Delete(entity.Api{})
+func (a *Resource) Delete(ctx context.Context, id string) error {
+	result := entity.GetResourceDB(ctx, a.DB).Where("id=?", id).Delete(entity.Resource{})
 	if err := result.Error; err != nil {
 		return errors.WithStack(err)
 	}

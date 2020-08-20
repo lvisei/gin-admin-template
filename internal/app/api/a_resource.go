@@ -8,25 +8,25 @@ import (
 	"github.com/google/wire"
 )
 
-// ApiSet 注入Api
-var ApiSet = wire.NewSet(wire.Struct(new(Api), "*"))
+// ResourceSet 注入Resource
+var ResourceSet = wire.NewSet(wire.Struct(new(Resource), "*"))
 
-// Api 接口管理
-type Api struct {
-	ApiBll bll.IApi
+// Resource 资源管理
+type Resource struct {
+	ResourceBll bll.IResource
 }
 
 // Query 查询数据
-func (a *Api) Query(c *gin.Context) {
+func (a *Resource) Query(c *gin.Context) {
 	ctx := c.Request.Context()
-	var params schema.ApiQueryParam
+	var params schema.ResourceQueryParam
 	if err := ginplus.ParseQuery(c, &params); err != nil {
 		ginplus.ResError(c, err)
 		return
 	}
 
 	params.Pagination = true
-	result, err := a.ApiBll.Query(ctx, params)
+	result, err := a.ResourceBll.Query(ctx, params)
 	if err != nil {
 		ginplus.ResError(c, err)
 		return
@@ -36,9 +36,9 @@ func (a *Api) Query(c *gin.Context) {
 }
 
 // Get 查询指定数据
-func (a *Api) Get(c *gin.Context) {
+func (a *Resource) Get(c *gin.Context) {
 	ctx := c.Request.Context()
-	item, err := a.ApiBll.Get(ctx, c.Param("id"))
+	item, err := a.ResourceBll.Get(ctx, c.Param("id"))
 	if err != nil {
 		ginplus.ResError(c, err)
 		return
@@ -47,16 +47,16 @@ func (a *Api) Get(c *gin.Context) {
 }
 
 // Create 创建数据
-func (a *Api) Create(c *gin.Context) {
+func (a *Resource) Create(c *gin.Context) {
 	ctx := c.Request.Context()
-	var item schema.Api
+	var item schema.Resource
 	if err := ginplus.ParseJSON(c, &item); err != nil {
 		ginplus.ResError(c, err)
 		return
 	}
 
 	item.Creator = ginplus.GetUserID(c)
-	result, err := a.ApiBll.Create(ctx, item)
+	result, err := a.ResourceBll.Create(ctx, item)
 	if err != nil {
 		ginplus.ResError(c, err)
 		return
@@ -65,15 +65,15 @@ func (a *Api) Create(c *gin.Context) {
 }
 
 // Update 更新数据
-func (a *Api) Update(c *gin.Context) {
+func (a *Resource) Update(c *gin.Context) {
 	ctx := c.Request.Context()
-	var item schema.Api
+	var item schema.Resource
 	if err := ginplus.ParseJSON(c, &item); err != nil {
 		ginplus.ResError(c, err)
 		return
 	}
 
-	err := a.ApiBll.Update(ctx, c.Param("id"), item)
+	err := a.ResourceBll.Update(ctx, c.Param("id"), item)
 	if err != nil {
 		ginplus.ResError(c, err)
 		return
@@ -82,9 +82,9 @@ func (a *Api) Update(c *gin.Context) {
 }
 
 // Delete 删除数据
-func (a *Api) Delete(c *gin.Context) {
+func (a *Resource) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.ApiBll.Delete(ctx, c.Param("id"))
+	err := a.ResourceBll.Delete(ctx, c.Param("id"))
 	if err != nil {
 		ginplus.ResError(c, err)
 		return

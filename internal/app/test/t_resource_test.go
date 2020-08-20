@@ -9,14 +9,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestApi(t *testing.T) {
-	const router = apiPrefix + "v1/apis"
+func TestResource(t *testing.T) {
+	const router = apiPrefix + "v1/resources"
 	var err error
 
 	w := httptest.NewRecorder()
 
-	// post /apis
-	addItem := &schema.ApiCreateParams{
+	// post /resources
+	addItem := &schema.ResourceCreateParams{
 		Group:       unique.MustUUID().String(),
 		Path:        unique.MustUUID().String(),
 		Method:      unique.MustUUID().String(),
@@ -28,10 +28,10 @@ func TestApi(t *testing.T) {
 	err = parseReader(w.Body, &addItemRes)
 	assert.Nil(t, err)
 
-	// get /apis/:id
+	// get /resources/:id
 	engine.ServeHTTP(w, newGetRequest("%s/%s", nil, router, addItemRes.ID))
 	assert.Equal(t, 200, w.Code)
-	var getItem schema.Api
+	var getItem schema.Resource
 	err = parseReader(w.Body, &getItem)
 	assert.Nil(t, err)
 	assert.Equal(t, addItem.Group, getItem.Group)
@@ -40,7 +40,7 @@ func TestApi(t *testing.T) {
 	assert.Equal(t, addItem.Description, getItem.Description)
 	assert.NotEmpty(t, getItem.ID)
 
-	// put /apis/:id
+	// put /resources/:id
 	putItem := getItem
 	putItem.Group = unique.MustUUID().String()
 	putItem.Path = unique.MustUUID().String()
@@ -50,10 +50,10 @@ func TestApi(t *testing.T) {
 	err = parseOK(w.Body)
 	assert.Nil(t, err)
 
-	// query /apis
+	// query /resources
 	engine.ServeHTTP(w, newGetRequest(router, newPageParam()))
 	assert.Equal(t, 200, w.Code)
-	var pageItems []*schema.Api
+	var pageItems []*schema.Resource
 	err = parsePageReader(w.Body, &pageItems)
 	assert.Nil(t, err)
 	assert.GreaterOrEqual(t, len(pageItems), 1)
@@ -62,7 +62,7 @@ func TestApi(t *testing.T) {
 		assert.Equal(t, putItem.Group, pageItems[0].Group)
 	}
 
-	// delete /apis/:id
+	// delete /resources/:id
 	engine.ServeHTTP(w, newDeleteRequest("%s/%s", router, addItemRes.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)
