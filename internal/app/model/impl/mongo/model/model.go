@@ -14,4 +14,5 @@ var ModelSet = wire.NewSet(
 	TransSet,
 	UserRoleSet,
 	UserSet,
+	ResourceSet,
 )

@@ -62,6 +62,7 @@ func CreateIndexes(ctx context.Context, cli *mongo.Client) error {
 		new(entity.Role),
 		new(entity.UserRole),
 		new(entity.User),
+		new(entity.Resource),
 	)
 }
 

@@ -31,6 +31,7 @@ type Router struct {
 	UserAPI        *api.User
 	SysAPI         *api.Sys
 	ApiAPI         *api.Api
+	ResourceAPI    *api.Resource
 }
 
 // Register 注册路由

@@ -107,5 +107,14 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gApi.DELETE(":id", a.ApiAPI.Delete)
 		}
 
+		gResource := v1.Group("resources")
+		{
+			gResource.GET("", a.ResourceAPI.Query)
+			gResource.GET(":id", a.ResourceAPI.Get)
+			gResource.POST("", a.ResourceAPI.Create)
+			gResource.PUT(":id", a.ResourceAPI.Update)
+			gResource.DELETE(":id", a.ResourceAPI.Delete)
+		}
+
 	}
 }

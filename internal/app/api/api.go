@@ -12,4 +12,5 @@ var APISet = wire.NewSet(
 	UserSet,
 	SysSet,
 	ApiSet,
+	ResourceSet,
 )

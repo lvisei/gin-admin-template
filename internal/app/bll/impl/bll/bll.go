@@ -10,4 +10,5 @@ var BllSet = wire.NewSet(
 	RoleSet,
 	UserSet,
 	ApiSet,
+	ResourceSet,
 )
