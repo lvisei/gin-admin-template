@@ -30,7 +30,6 @@ type Router struct {
 	RoleAPI        *api.Role
 	UserAPI        *api.User
 	SysAPI         *api.Sys
-	ApiAPI         *api.Api
 	ResourceAPI    *api.Resource
 }
 
