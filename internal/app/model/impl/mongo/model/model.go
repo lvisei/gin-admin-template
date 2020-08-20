@@ -6,6 +6,7 @@ import "github.com/google/wire"
 var ModelSet = wire.NewSet(
 	DemoSet,
 	MenuActionResourceSet,
+	MenuResourceSet,
 	MenuActionSet,
 	MenuSet,
 	RoleMenuSet,

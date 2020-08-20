@@ -55,6 +55,7 @@ func CreateIndexes(ctx context.Context, cli *mongo.Client) error {
 		cli,
 		new(entity.Demo),
 		new(entity.MenuAction),
+		new(entity.MenuResource),
 		new(entity.MenuActionResource),
 		new(entity.Menu),
 		new(entity.RoleMenu),

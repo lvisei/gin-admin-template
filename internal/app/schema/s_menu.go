@@ -299,3 +299,44 @@ func (a MenuActionResources) ToActionIDMap() map[string]MenuActionResources {
 	}
 	return m
 }
+
+// ----------------------------------------MenuResource--------------------------------------
+
+// MenuResource 菜单资源对象
+type MenuResource struct {
+	ID         string    `json:"id"`                         // 唯一标识
+	MenuID     string    `json:"menu_id" binding:"required"` // 菜单ID
+	ResourceID string    `json:"resource_id"`                // 资源ID
+	CreatedAt  time.Time `json:"created_at"`                 // 创建时间
+	UpdatedAt  time.Time `json:"updated_at"`                 // 更新时间
+
+}
+
+func (a *MenuResource) String() string {
+	return util.JSONMarshalToString(a)
+}
+
+// MenuResourceQueryParam 查询条件
+type MenuResourceQueryParam struct {
+	PaginationParam
+	MenuID  string   // 菜单ID
+	MenuIDs []string // 菜单ID列表
+}
+
+// MenuResourceQueryOptions 查询可选参数项
+type MenuResourceQueryOptions struct {
+	OrderFields []*OrderField // 排序字段
+}
+
+// MenuResourceGetOptions Get查询可选参数项
+type MenuResourceGetOptions struct {
+}
+
+// MenuResourceQueryResult 查询结果
+type MenuResourceQueryResult struct {
+	Data       MenuResources
+	PageResult *PaginationResult
+}
+
+// MenuResources 菜单资源列表
+type MenuResources []*MenuResource
