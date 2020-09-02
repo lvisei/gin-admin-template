@@ -13,6 +13,12 @@
       routePath: "dashboard"
       component: "/dashboard"
       sequence: 2
+    - name: 工作台
+      icon: md-easel
+      routeName: "Test"
+      routePath: "test"
+      component: "/test"
+      sequence: 3
 - name: 系统管理
   icon: md-settings
   routeName: "SystemManagement"
@@ -32,37 +38,60 @@
           resources:
             - method: GET
               path: "/api/v1/roles.select"
+              group: 角色接口
+              description: 查询选择数据
             - method: POST
               path: "/api/v1/users"
+              group: 用户接口
+              description: 查询数据
         - code: edit
           name: 编辑
           resources:
             - method: GET
               path: "/api/v1/roles.select"
+              group: 角色接口
+              description: 查询选择数据
             - method: GET
               path: "/api/v1/users/:id"
+              group: 用户接口
+              description: 查询指定数据
             - method: PUT
               path: "/api/v1/users/:id"
+              group: 用户接口
+              description: 更新数据
         - code: del
           name: 删除
           resources:
             - method: DELETE
               path: "/api/v1/users/:id"
+              group: 用户接口
+              description: 删除数据
         - code: query
           name: 查询
           resources:
             - method: GET
               path: "/api/v1/users"
+              group: 用户接口
+              description: 查询数据
         - code: disable
           name: 禁用
           resources:
             - method: PATCH
               path: "/api/v1/users/:id/disable"
+              group: 用户接口
+              description: 禁用数据
         - code: enable
           name: 启用
           resources:
             - method: PATCH
               path: "/api/v1/users/:id/enable"
+              group: 用户接口
+              description: 启用数据
+      resources:
+        - method: GET
+          path: "/api/v1/roles.select"
+          group: 角色接口
+          description: 查询选择数据
     - name: 角色管理
       icon: md-people
       routeName: "RoleManagement"
@@ -75,37 +104,60 @@
           resources:
             - method: GET
               path: "/api/v1/menus.tree"
+              group: 菜单接口
+              description: 查询菜单树
             - method: POST
               path: "/api/v1/roles"
+              group: 角色接口
+              description: 创建数据
         - code: edit
           name: 编辑
           resources:
             - method: GET
               path: "/api/v1/menus.tree"
+              group: 菜单接口
+              description: 查询菜单树
             - method: GET
               path: "/api/v1/roles/:id"
+              group: 角色接口
+              description: 查询指定数据
             - method: PUT
               path: "/api/v1/roles/:id"
+              group: 角色接口
+              description: 更新数据
         - code: del
           name: 删除
           resources:
             - method: DELETE
               path: "/api/v1/roles/:id"
+              group: 角色接口
+              description: 删除数据
         - code: query
           name: 查询
           resources:
             - method: GET
               path: "/api/v1/roles"
+              group: 角色接口
+              description: 查询数据
         - code: disable
           name: 禁用
           resources:
             - method: PATCH
               path: "/api/v1/roles/:id/disable"
+              group: 角色接口
+              description: 禁用数据
         - code: enable
           name: 启用
           resources:
             - method: PATCH
               path: "/api/v1/roles/:id/enable"
+              group: 角色接口
+              description: 启用数据
+      resources:
+        - method: GET
+          path: "/api/v1/menus.tree"
+          group: 菜单接口
+          description: 查询菜单树
     - name: 菜单管理
       icon: md-menu
       routeName: "MenuManagement"
@@ -118,37 +170,53 @@
           resources:
             - method: POST
               path: "/api/v1/menus"
+              group: 菜单接口
+              description: 创建数据
         - code: edit
           name: 编辑
           resources:
             - method: GET
               path: "/api/v1/menus/:id"
+              group: 菜单接口
+              description: 查询指定数据
             - method: PUT
               path: "/api/v1/menus/:id"
+              group: 菜单接口
+              description: 更新数据
         - code: del
           name: 删除
           resources:
             - method: DELETE
               path: "/api/v1/menus/:id"
+              group: 菜单接口
+              description: 删除数据
         - code: query
           name: 查询
           resources:
             - method: GET
               path: "/api/v1/menus"
+              group: 菜单接口
+              description: 查询数据
             - method: GET
               path: "/api/v1/menus.tree"
+              group: 菜单接口
+              description: 查询菜单树
         - code: disable
           name: 禁用
           resources:
             - method: PATCH
               path: "/api/v1/menus/:id/disable"
+              group: 菜单接口
+              description: 禁用数据
         - code: enable
           name: 启用
           resources:
             - method: PATCH
               path: "/api/v1/menus/:id/enable"
-- name: DEMO
-  icon: tag
+              group: 菜单接口
+              description: 启用数据
+- name: 测试菜单
+  icon: md-flask
   routeName: "Example"
   routePath: "/example"
   component: "/example/demo"
@@ -159,30 +227,37 @@
       resources:
         - method: POST
           path: "/api/v1/demos"
+          group: DEMO
     - code: edit
       name: 编辑
       resources:
         - method: GET
           path: "/api/v1/demos/:id"
+          group: DEMO
         - method: PUT
           path: "/api/v1/demos/:id"
+          group: DEMO
     - code: del
       name: 删除
       resources:
         - method: DELETE
           path: "/api/v1/demos/:id"
+          group: DEMO
     - code: query
       name: 查询
       resources:
         - method: GET
           path: "/api/v1/demos"
+          group: DEMO
     - code: disable
       name: 禁用
       resources:
         - method: PATCH
           path: "/api/v1/demos/:id/disable"
+          group: DEMO
     - code: enable
       name: 启用
       resources:
         - method: PATCH
           path: "/api/v1/demos/:id/enable"
+          group: DEMO

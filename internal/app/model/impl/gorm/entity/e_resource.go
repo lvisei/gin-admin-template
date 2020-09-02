@@ -29,7 +29,7 @@ type Resource struct {
 	Group       string `gorm:"column:group;size:50;index;default:'';not null;"` // 资源组
 	Path        string `gorm:"column:path;size:100;"`                           // 资源请求路径（支持/:id匹配）
 	Method      string `gorm:"column:method;size:100;"`                         // 资源请求方式(支持正则)
-	Description string `gorm:"column:description;size:1024;"`                   // 接口描述
+	Description string `gorm:"column:description;size:1024;"`                   // 资源描述
 	Creator     string `gorm:"column:creator;"`                                 // 创建者
 }
 

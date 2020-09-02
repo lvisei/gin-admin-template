@@ -24,6 +24,7 @@ type Menu struct {
 	MenuModel               model.IMenu
 	MenuActionModel         model.IMenuAction
 	MenuActionResourceModel model.IMenuActionResource
+	ResourceModel           model.IResource
 }
 
 // InitData 初始化菜单数据
@@ -74,9 +75,15 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 				Status:     1,
 				ShowStatus: 1,
 				Actions:    item.Actions,
+				Resources:  item.Resources,
 			}
 			if v := item.ShowStatus; v > 0 {
 				sitem.ShowStatus = v
+			}
+			
+			err := a.createResources(ctx, sitem)
+			if err != nil {
+				return err
 			}
 
 			nsitem, err := a.Create(ctx, sitem)
@@ -94,6 +101,60 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 
 		return nil
 	})
+}
+
+func (a *Menu) createResources(ctx context.Context, item schema.Menu) error {
+	return ExecTrans(ctx, a.TransModel, func(ctx context.Context) error {
+		for _, ritem := range item.Resources {
+			resourceCreateParams := new(schema.ResourceCreateParams)
+			util.StructMapToStruct(ritem, resourceCreateParams)
+			resourceID, err := a.createResource(ctx, resourceCreateParams)
+			if err != nil {
+				return err
+			}
+			ritem.ResourceID = resourceID
+		}
+		for _, item := range item.Actions {
+			for _, ritem := range item.Resources {
+				resourceCreateParams := new(schema.ResourceCreateParams)
+				util.StructMapToStruct(ritem, resourceCreateParams)
+				resourceID, err := a.createResource(ctx, resourceCreateParams)
+				if err != nil {
+					return err
+				}
+				ritem.ResourceID = resourceID
+			}
+
+		}
+		return nil
+	})
+
+}
+
+func (a *Menu) createResource(ctx context.Context, resourceCreateParams *schema.ResourceCreateParams) (string, error) {
+	resource := schema.Resource{
+		ID:                   iutil.NewID(),
+		ResourceCreateParams: *resourceCreateParams,
+	}
+	result, err := a.ResourceModel.Query(ctx, schema.ResourceQueryParam{
+		PaginationParam: schema.PaginationParam{
+			Pagination: false,
+		},
+		Path:   resource.Path,
+		Method: resource.Method,
+		Group:  resource.Group,
+	})
+	if err != nil {
+		return "", err
+	} else if len(result.Data) > 0 {
+		resourceID := result.Data[0].ID
+		return resourceID, nil
+	}
+	err = a.ResourceModel.Create(ctx, resource)
+	if err != nil {
+		return "", err
+	}
+	return resource.ID, nil
 }
 
 // Query 查询数据

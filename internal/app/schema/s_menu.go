@@ -9,22 +9,23 @@ import (
 
 // Menu 菜单对象
 type Menu struct {
-	ID         string      `json:"id"`                                        // 唯一标识
-	Name       string      `json:"name" binding:"required"`                   // 菜单名称
-	Sequence   int         `json:"sequence"`                                  // 排序值
-	Icon       string      `json:"icon"`                                      // 菜单图标
-	RouteName  string      `json:"routeName"`                                 // 路由名称
-	RoutePath  string      `json:"routePath"`                                 // 路由地址
-	Component  string      `json:"component"`                                 // 组件路径
-	ParentID   string      `json:"parentId"`                                  // 父级ID
-	ParentPath string      `json:"parentPath"`                                // 父级路径
-	ShowStatus int         `json:"showStatus" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
-	Status     int         `json:"status" binding:"required,max=2,min=1"`     // 状态(1:启用 2:禁用)
-	Memo       string      `json:"memo"`                                      // 备注
-	Creator    string      `json:"creator"`                                   // 创建者
-	CreatedAt  time.Time   `json:"createdAt"`                                 // 创建时间
-	UpdatedAt  time.Time   `json:"updatedAt"`                                 // 更新时间
-	Actions    MenuActions `json:"actions"`                                   // 动作列表
+	ID         string        `json:"id"`                                        // 唯一标识
+	Name       string        `json:"name" binding:"required"`                   // 菜单名称
+	Sequence   int           `json:"sequence"`                                  // 排序值
+	Icon       string        `json:"icon"`                                      // 菜单图标
+	RouteName  string        `json:"routeName"`                                 // 路由名称
+	RoutePath  string        `json:"routePath"`                                 // 路由地址
+	Component  string        `json:"component"`                                 // 组件路径
+	ParentID   string        `json:"parentId"`                                  // 父级ID
+	ParentPath string        `json:"parentPath"`                                // 父级路径
+	ShowStatus int           `json:"showStatus" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
+	Status     int           `json:"status" binding:"required,max=2,min=1"`     // 状态(1:启用 2:禁用)
+	Memo       string        `json:"memo"`                                      // 备注
+	Creator    string        `json:"creator"`                                   // 创建者
+	CreatedAt  time.Time     `json:"createdAt"`                                 // 创建时间
+	UpdatedAt  time.Time     `json:"updatedAt"`                                 // 更新时间
+	Actions    MenuActions   `json:"actions"`                                   // 动作列表
+	Resources  MenuResources `json:"resources"`                                 // 资源列表
 }
 
 func (a *Menu) String() string {
@@ -33,17 +34,18 @@ func (a *Menu) String() string {
 
 // MenuCreateParams 新增参数
 type MenuCreateParams struct {
-	Name       string      `json:"name" binding:"required"`                   // 菜单名称
-	Sequence   int         `json:"sequence"`                                  // 排序值
-	Icon       string      `json:"icon"`                                      // 菜单图标
-	RouteName  string      `json:"routeName"`                                 // 路由名称
-	RoutePath  string      `json:"routePath"`                                 // 路由地址
-	Component  string      `json:"component"`                                 // 组件路径
-	ParentID   string      `json:"parentId"`                                  // 父级ID
-	ShowStatus int         `json:"showStatus" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
-	Status     int         `json:"status" binding:"required,max=2,min=1"`     // 状态(1:启用 2:禁用)
-	Memo       string      `json:"memo"`                                      // 备注
-	Actions    MenuActions `json:"actions"`                                   // 动作列表
+	Name       string        `json:"name" binding:"required"`                   // 菜单名称
+	Sequence   int           `json:"sequence"`                                  // 排序值
+	Icon       string        `json:"icon"`                                      // 菜单图标
+	RouteName  string        `json:"routeName"`                                 // 路由名称
+	RoutePath  string        `json:"routePath"`                                 // 路由地址
+	Component  string        `json:"component"`                                 // 组件路径
+	ParentID   string        `json:"parentId"`                                  // 父级ID
+	ShowStatus int           `json:"showStatus" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
+	Status     int           `json:"status" binding:"required,max=2,min=1"`     // 状态(1:启用 2:禁用)
+	Memo       string        `json:"memo"`                                      // 备注
+	Actions    MenuActions   `json:"actions"`                                   // 动作列表
+	Resources  MenuResources `json:"resources"`                                 // 资源列表
 }
 
 // MenuQueryParam 查询条件
@@ -132,6 +134,7 @@ func (a Menus) ToTree() MenuTrees {
 			ShowStatus: item.ShowStatus,
 			Status:     item.Status,
 			Actions:    item.Actions,
+			Resources:  item.Resources,
 		}
 	}
 	return list.ToTree()
@@ -151,19 +154,20 @@ func (a Menus) FillMenuAction(mActions map[string]MenuActions) Menus {
 
 // MenuTree 菜单树
 type MenuTree struct {
-	ID         string      `yaml:"-" json:"id"`                                  // 唯一标识
-	Name       string      `yaml:"name" json:"name"`                             // 菜单名称
-	Icon       string      `yaml:"icon" json:"icon"`                             // 菜单图标
-	RouteName  string      `yaml:"routeName,omitempty" json:"routeName"`         // 路由名称
-	RoutePath  string      `yaml:"routePath,omitempty" json:"routePath"`         // 路由地址
-	Component  string      `yaml:"component,omitempty" json:"component"`         // 组件路径
-	ParentID   string      `yaml:"-" json:"parentId"`                            // 父级ID
-	ParentPath string      `yaml:"-" json:"parentPath"`                          // 父级路径
-	Sequence   int         `yaml:"sequence" json:"sequence"`                     // 排序值
-	ShowStatus int         `yaml:"-" json:"showStatus"`                          // 显示状态(1:显示 2:隐藏)
-	Status     int         `yaml:"-" json:"status"`                              // 状态(1:启用 2:禁用)
-	Actions    MenuActions `yaml:"actions,omitempty" json:"actions"`             // 动作列表
-	Children   *MenuTrees  `yaml:"children,omitempty" json:"children,omitempty"` // 子级树
+	ID         string        `yaml:"-" json:"id"`                                  // 唯一标识
+	Name       string        `yaml:"name" json:"name"`                             // 菜单名称
+	Icon       string        `yaml:"icon" json:"icon"`                             // 菜单图标
+	RouteName  string        `yaml:"routeName,omitempty" json:"routeName"`         // 路由名称
+	RoutePath  string        `yaml:"routePath,omitempty" json:"routePath"`         // 路由地址
+	Component  string        `yaml:"component,omitempty" json:"component"`         // 组件路径
+	ParentID   string        `yaml:"-" json:"parentId"`                            // 父级ID
+	ParentPath string        `yaml:"-" json:"parentPath"`                          // 父级路径
+	Sequence   int           `yaml:"sequence" json:"sequence"`                     // 排序值
+	ShowStatus int           `yaml:"-" json:"showStatus"`                          // 显示状态(1:显示 2:隐藏)
+	Status     int           `yaml:"-" json:"status"`                              // 状态(1:启用 2:禁用)
+	Actions    MenuActions   `yaml:"actions,omitempty" json:"actions"`             // 动作列表
+	Resources  MenuResources `yaml:"resources,omitempty" json:"resources"`         // 资源列表
+	Children   *MenuTrees    `yaml:"children,omitempty" json:"children,omitempty"` // 子级树
 }
 
 // MenuTrees 菜单树列表
@@ -255,10 +259,13 @@ func (a MenuActions) ToMenuIDMap() map[string]MenuActions {
 
 // MenuActionResource 菜单动作关联资源对象
 type MenuActionResource struct {
-	ID       string `yaml:"-" json:"id"`                             // 唯一标识
-	ActionID string `yaml:"-" json:"actionId"`                       // 菜单动作ID
-	Method   string `yaml:"method" binding:"required" json:"method"` // 资源请求方式(支持正则)
-	Path     string `yaml:"path" binding:"required" json:"path"`     // 资源请求路径（支持/:id匹配）
+	ID          string `yaml:"-" json:"id"`                             // 唯一标识
+	ActionID    string `yaml:"-" json:"actionId"`                       // 菜单动作ID
+	ResourceID  string `yaml:"-" json:"resource_id"`                    // 资源ID
+	Method      string `yaml:"method" binding:"required" json:"method"` // 资源请求方式(支持正则)
+	Path        string `yaml:"path" binding:"required" json:"path"`     // 资源请求路径（支持/:id匹配）
+	Group       string `yaml:"group" binding:"required" json:"-"`       // 资源组
+	Description string `yaml:"description" json:"-"`                    // 资源描述
 }
 
 // MenuActionResourceQueryParam 查询条件
@@ -304,12 +311,13 @@ func (a MenuActionResources) ToActionIDMap() map[string]MenuActionResources {
 
 // MenuResource 菜单资源对象
 type MenuResource struct {
-	ID         string    `json:"id"`                         // 唯一标识
-	MenuID     string    `json:"menu_id" binding:"required"` // 菜单ID
-	ResourceID string    `json:"resource_id"`                // 资源ID
-	CreatedAt  time.Time `json:"created_at"`                 // 创建时间
-	UpdatedAt  time.Time `json:"updated_at"`                 // 更新时间
-
+	ID          string `yaml:"-" json:"id"`                         // 唯一标识
+	MenuID      string `yaml:"-" json:"menu_id" binding:"required"` // 菜单ID
+	ResourceID  string `yaml:"-" json:"resource_id"`                // 资源ID
+	Group       string `yaml:"group" binding:"required" json:"-"`   // 资源组
+	Method      string `yaml:"method" binding:"required" json:"-"`  // 资源请求方式(支持正则)
+	Path        string `yaml:"path" binding:"required" json:"-"`    // 资源请求路径（支持/:id匹配）
+	Description string `yaml:"description" json:"-"`                // 资源描述
 }
 
 func (a *MenuResource) String() string {
