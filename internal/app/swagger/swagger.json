@@ -2352,7 +2352,6 @@
             "type": "object",
             "required": [
                 "code",
-                "menuId",
                 "name"
             ],
             "properties": {
@@ -2381,6 +2380,9 @@
         },
         "schema.MenuActionResource": {
             "type": "object",
+            "required": [
+                "resourceId"
+            ],
             "properties": {
                 "actionId": {
                     "description": "菜单动作ID",
@@ -2471,7 +2473,7 @@
         "schema.MenuResource": {
             "type": "object",
             "required": [
-                "menuId"
+                "resourceId"
             ],
             "properties": {
                 "id": {

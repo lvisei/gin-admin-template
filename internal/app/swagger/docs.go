@@ -2364,7 +2364,6 @@ var doc = `{
             "type": "object",
             "required": [
                 "code",
-                "menuId",
                 "name"
             ],
             "properties": {
@@ -2393,6 +2392,9 @@ var doc = `{
         },
         "schema.MenuActionResource": {
             "type": "object",
+            "required": [
+                "resourceId"
+            ],
             "properties": {
                 "actionId": {
                     "description": "菜单动作ID",
@@ -2483,7 +2485,7 @@ var doc = `{
         "schema.MenuResource": {
             "type": "object",
             "required": [
-                "menuId"
+                "resourceId"
             ],
             "properties": {
                 "id": {

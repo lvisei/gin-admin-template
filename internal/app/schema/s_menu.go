@@ -203,7 +203,7 @@ func (a MenuTrees) ToTree() MenuTrees {
 // MenuAction 菜单动作对象
 type MenuAction struct {
 	ID        string              `yaml:"-" json:"id"`                          // 唯一标识
-	MenuID    string              `yaml:"-" binding:"required" json:"menuId"`   // 菜单ID
+	MenuID    string              `yaml:"-" json:"menuId"`                      // 菜单ID
 	Code      string              `yaml:"code" binding:"required" json:"code"`  // 动作编号
 	Name      string              `yaml:"name" binding:"required" json:"name"`  // 动作名称
 	Resources MenuActionResources `yaml:"resources,omitempty" json:"resources"` // 资源列表
@@ -259,13 +259,13 @@ func (a MenuActions) ToMenuIDMap() map[string]MenuActions {
 
 // MenuActionResource 菜单动作关联资源对象
 type MenuActionResource struct {
-	ID          string `yaml:"-" json:"id"`                             // 唯一标识
-	ActionID    string `yaml:"-" json:"actionId"`                       // 菜单动作ID
-	ResourceID  string `yaml:"-" json:"resourceId"`                     // 资源ID
-	Method      string `yaml:"method" binding:"required" json:"-"` // 资源请求方式(支持正则)
-	Path        string `yaml:"path" binding:"required" json:"-"`     // 资源请求路径（支持/:id匹配）
-	Group       string `yaml:"group" binding:"required" json:"-"`   // 资源组
-	Description string `yaml:"description" json:"-"`          // 资源描述
+	ID          string `yaml:"-" json:"id"`                            // 唯一标识
+	ActionID    string `yaml:"-" json:"actionId"`                      // 菜单动作ID
+	ResourceID  string `yaml:"-" binding:"required" json:"resourceId"` // 资源ID
+	Method      string `yaml:"method" binding:"required" json:"-"`     // 资源请求方式(支持正则)
+	Path        string `yaml:"path" binding:"required" json:"-"`       // 资源请求路径（支持/:id匹配）
+	Group       string `yaml:"group" binding:"required" json:"-"`      // 资源组
+	Description string `yaml:"description" json:"-"`                   // 资源描述
 }
 
 // MenuActionResourceQueryParam 查询条件
@@ -293,7 +293,7 @@ type MenuActionResources []*MenuActionResource
 func (a MenuActionResources) ToMap() map[string]*MenuActionResource {
 	m := make(map[string]*MenuActionResource)
 	for _, item := range a {
-		m[item.Method+item.Path] = item
+		m[item.ResourceID] = item
 	}
 	return m
 }
@@ -311,13 +311,13 @@ func (a MenuActionResources) ToActionIDMap() map[string]MenuActionResources {
 
 // MenuResource 菜单资源对象
 type MenuResource struct {
-	ID          string `yaml:"-" json:"id"`                        // 唯一标识
-	MenuID      string `yaml:"-" json:"menuId" binding:"required"` // 菜单ID
-	ResourceID  string `yaml:"-" json:"resourceId"`                // 资源ID
-	Group       string `yaml:"group" binding:"required" json:"-"`  // 资源组
-	Method      string `yaml:"method" binding:"required" json:"-"` // 资源请求方式(支持正则)
-	Path        string `yaml:"path" binding:"required" json:"-"`   // 资源请求路径（支持/:id匹配）
-	Description string `yaml:"description" json:"-"`               // 资源描述
+	ID          string `yaml:"-" json:"id"`                            // 唯一标识
+	MenuID      string `yaml:"-" json:"menuId"`                        // 菜单ID
+	ResourceID  string `yaml:"-" json:"resourceId" binding:"required"` // 资源ID
+	Group       string `yaml:"group" binding:"required" json:"-"`      // 资源组
+	Method      string `yaml:"method" binding:"required" json:"-"`     // 资源请求方式(支持正则)
+	Path        string `yaml:"path" binding:"required" json:"-"`       // 资源请求路径（支持/:id匹配）
+	Description string `yaml:"description" json:"-"`                   // 资源描述
 }
 
 func (a *MenuResource) String() string {
@@ -348,3 +348,12 @@ type MenuResourceQueryResult struct {
 
 // MenuResources 菜单资源列表
 type MenuResources []*MenuResource
+
+// ToMap 转换为map
+func (a MenuResources) ToMap() map[string]*MenuResource {
+	m := make(map[string]*MenuResource)
+	for _, item := range a {
+		m[item.ResourceID] = item
+	}
+	return m
+}

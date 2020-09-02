@@ -170,7 +170,6 @@ definitions:
         type: object
     required:
     - code
-    - menuId
     - name
     type: object
   schema.MenuActionResource:
@@ -184,6 +183,8 @@ definitions:
       resourceId:
         description: 资源ID
         type: string
+    required:
+    - resourceId
     type: object
   schema.MenuActionResources:
     items:
@@ -250,7 +251,7 @@ definitions:
         description: 资源ID
         type: string
     required:
-    - menuId
+    - resourceId
     type: object
   schema.MenuResources:
     items:
