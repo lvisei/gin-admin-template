@@ -84,11 +84,19 @@ func BuildInjector() (*Injector, func(), error) {
 	trans := &model.Trans{
 		DB: db,
 	}
+	menuResource := &model.MenuResource{
+		DB: db,
+	}
+	resource := &model.Resource{
+		DB: db,
+	}
 	bllMenu := &bll.Menu{
 		TransModel:              trans,
 		MenuModel:               menu,
+		MenuResourceModel:       menuResource,
 		MenuActionModel:         menuAction,
 		MenuActionResourceModel: menuActionResource,
+		ResourceModel:           resource,
 	}
 	apiMenu := &api.Menu{
 		MenuBll: bllMenu,
@@ -114,9 +122,6 @@ func BuildInjector() (*Injector, func(), error) {
 		UserBll: bllUser,
 	}
 	sys := &api.Sys{}
-	resource := &model.Resource{
-		DB: db,
-	}
 	bllResource := &bll.Resource{
 		ResourceModel: resource,
 	}

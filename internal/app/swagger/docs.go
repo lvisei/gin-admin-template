@@ -2329,6 +2329,11 @@ var doc = `{
                     "description": "父级路径",
                     "type": "string"
                 },
+                "resources": {
+                    "description": "资源列表",
+                    "type": "object",
+                    "$ref": "#/definitions/schema.MenuResources"
+                },
                 "routeName": {
                     "description": "路由名称",
                     "type": "string"
@@ -2359,7 +2364,6 @@ var doc = `{
             "type": "object",
             "required": [
                 "code",
-                "menuId",
                 "name"
             ],
             "properties": {
@@ -2389,8 +2393,7 @@ var doc = `{
         "schema.MenuActionResource": {
             "type": "object",
             "required": [
-                "method",
-                "path"
+                "resourceId"
             ],
             "properties": {
                 "actionId": {
@@ -2401,12 +2404,8 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
-                "method": {
-                    "description": "资源请求方式(支持正则)",
-                    "type": "string"
-                },
-                "path": {
-                    "description": "资源请求路径（支持/:id匹配）",
+                "resourceId": {
+                    "description": "资源ID",
                     "type": "string"
                 }
             }
@@ -2456,6 +2455,11 @@ var doc = `{
                     "description": "父级ID",
                     "type": "string"
                 },
+                "resources": {
+                    "description": "资源列表",
+                    "type": "object",
+                    "$ref": "#/definitions/schema.MenuResources"
+                },
                 "routeName": {
                     "description": "路由名称",
                     "type": "string"
@@ -2476,6 +2480,32 @@ var doc = `{
                     "description": "状态(1:启用 2:禁用)",
                     "type": "integer"
                 }
+            }
+        },
+        "schema.MenuResource": {
+            "type": "object",
+            "required": [
+                "resourceId"
+            ],
+            "properties": {
+                "id": {
+                    "description": "唯一标识",
+                    "type": "string"
+                },
+                "menuId": {
+                    "description": "菜单ID",
+                    "type": "string"
+                },
+                "resourceId": {
+                    "description": "资源ID",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.MenuResources": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/schema.MenuResource"
             }
         },
         "schema.MenuTree": {
@@ -2514,6 +2544,11 @@ var doc = `{
                 "parentPath": {
                     "description": "父级路径",
                     "type": "string"
+                },
+                "resources": {
+                    "description": "资源列表",
+                    "type": "object",
+                    "$ref": "#/definitions/schema.MenuResources"
                 },
                 "routeName": {
                     "description": "路由名称",
@@ -2560,7 +2595,7 @@ var doc = `{
                     "type": "string"
                 },
                 "description": {
-                    "description": "接口描述",
+                    "description": "资源描述",
                     "type": "string"
                 },
                 "group": {
@@ -2594,7 +2629,7 @@ var doc = `{
             ],
             "properties": {
                 "description": {
-                    "description": "接口描述",
+                    "description": "资源描述",
                     "type": "string"
                 },
                 "group": {

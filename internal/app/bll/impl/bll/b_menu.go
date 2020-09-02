@@ -22,8 +22,10 @@ var MenuSet = wire.NewSet(wire.Struct(new(Menu), "*"), wire.Bind(new(bll.IMenu),
 type Menu struct {
 	TransModel              model.ITrans
 	MenuModel               model.IMenu
+	MenuResourceModel       model.IMenuResource
 	MenuActionModel         model.IMenuAction
 	MenuActionResourceModel model.IMenuActionResource
+	ResourceModel           model.IResource
 }
 
 // InitData 初始化菜单数据
@@ -74,9 +76,15 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 				Status:     1,
 				ShowStatus: 1,
 				Actions:    item.Actions,
+				Resources:  item.Resources,
 			}
 			if v := item.ShowStatus; v > 0 {
 				sitem.ShowStatus = v
+			}
+
+			err := a.createMenuResources(ctx, sitem)
+			if err != nil {
+				return err
 			}
 
 			nsitem, err := a.Create(ctx, sitem)
@@ -94,6 +102,60 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 
 		return nil
 	})
+}
+
+func (a *Menu) createMenuResources(ctx context.Context, item schema.Menu) error {
+	return ExecTrans(ctx, a.TransModel, func(ctx context.Context) error {
+		for _, item := range item.Resources {
+			resourceCreateParams := new(schema.ResourceCreateParams)
+			util.StructMapToStruct(item, resourceCreateParams)
+			resourceID, err := a.createMenuResource(ctx, resourceCreateParams)
+			if err != nil {
+				return err
+			}
+			item.ResourceID = resourceID
+		}
+		for _, item := range item.Actions {
+			for _, ritem := range item.Resources {
+				resourceCreateParams := new(schema.ResourceCreateParams)
+				util.StructMapToStruct(ritem, resourceCreateParams)
+				resourceID, err := a.createMenuResource(ctx, resourceCreateParams)
+				if err != nil {
+					return err
+				}
+				ritem.ResourceID = resourceID
+			}
+
+		}
+		return nil
+	})
+
+}
+
+func (a *Menu) createMenuResource(ctx context.Context, resourceCreateParams *schema.ResourceCreateParams) (string, error) {
+	resource := schema.Resource{
+		ID:                   iutil.NewID(),
+		ResourceCreateParams: *resourceCreateParams,
+	}
+	result, err := a.ResourceModel.Query(ctx, schema.ResourceQueryParam{
+		PaginationParam: schema.PaginationParam{
+			Pagination: false,
+		},
+		Path:   resource.Path,
+		Method: resource.Method,
+		Group:  resource.Group,
+	})
+	if err != nil {
+		return "", err
+	} else if len(result.Data) > 0 {
+		resourceID := result.Data[0].ID
+		return resourceID, nil
+	}
+	err = a.ResourceModel.Create(ctx, resource)
+	if err != nil {
+		return "", err
+	}
+	return resource.ID, nil
 }
 
 // Query 查询数据
@@ -120,6 +182,12 @@ func (a *Menu) Get(ctx context.Context, id string, opts ...schema.MenuQueryOptio
 		return nil, errors.ErrNotFound
 	}
 
+	resources, err := a.QueryResources(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	item.Resources = resources
+
 	actions, err := a.QueryActions(ctx, id)
 	if err != nil {
 		return nil, err
@@ -127,6 +195,20 @@ func (a *Menu) Get(ctx context.Context, id string, opts ...schema.MenuQueryOptio
 	item.Actions = actions
 
 	return item, nil
+}
+
+// QueryResources 查询资源数据
+func (a *Menu) QueryResources(ctx context.Context, id string) (schema.MenuResources, error) {
+	result, err := a.MenuResourceModel.Query(ctx, schema.MenuResourceQueryParam{
+		MenuID: id,
+	})
+	if err != nil {
+		return nil, err
+	} else if len(result.Data) == 0 {
+		return nil, nil
+	}
+
+	return result.Data, nil
 }
 
 // QueryActions 查询动作数据
@@ -182,7 +264,12 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 	item.ID = iutil.NewID()
 
 	err = ExecTrans(ctx, a.TransModel, func(ctx context.Context) error {
-		err := a.createActions(ctx, item.ID, item.Actions)
+		err := a.createResources(ctx, item.ID, item.Resources)
+		if err != nil {
+			return err
+		}
+
+		err = a.createActions(ctx, item.ID, item.Actions)
 		if err != nil {
 			return err
 		}
@@ -194,6 +281,19 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 	}
 
 	return schema.NewIDResult(item.ID), nil
+}
+
+// 创建资源数据
+func (a *Menu) createResources(ctx context.Context, menuID string, items schema.MenuResources) error {
+	for _, item := range items {
+		item.ID = iutil.NewID()
+		item.MenuID = menuID
+		err := a.MenuResourceModel.Create(ctx, *item)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // 创建动作数据
@@ -274,7 +374,12 @@ func (a *Menu) Update(ctx context.Context, id string, item schema.Menu) error {
 	}
 
 	return ExecTrans(ctx, a.TransModel, func(ctx context.Context) error {
-		err := a.updateActions(ctx, id, oldItem.Actions, item.Actions)
+		err := a.updateResources(ctx, id, oldItem.Resources, item.Resources)
+		if err != nil {
+			return err
+		}
+
+		err = a.updateActions(ctx, id, oldItem.Actions, item.Actions)
 		if err != nil {
 			return err
 		}
@@ -286,6 +391,45 @@ func (a *Menu) Update(ctx context.Context, id string, item schema.Menu) error {
 
 		return a.MenuModel.Update(ctx, id, item)
 	})
+}
+
+// 更新资源数据
+func (a *Menu) updateResources(ctx context.Context, menuID string, oldItems, newItems schema.MenuResources) error {
+	// 计算需要更新的资源配置（只包括新增和删除的，更新的不关心）
+	addResources, delResources := a.compareResources(ctx, oldItems, newItems)
+
+	err := a.createResources(ctx, menuID, addResources)
+	if err != nil {
+		return err
+	}
+
+	for _, item := range delResources {
+		err := a.MenuResourceModel.Delete(ctx, item.ID)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// 对比资源列表
+func (a *Menu) compareResources(ctx context.Context, oldResources, newResources schema.MenuResources) (addList, delList schema.MenuResources) {
+	mOldResources := oldResources.ToMap()
+	mNewResources := newResources.ToMap()
+
+	for k, item := range mNewResources {
+		if _, ok := mOldResources[k]; ok {
+			delete(mOldResources, k)
+			continue
+		}
+		addList = append(addList, item)
+	}
+
+	for _, item := range mOldResources {
+		delList = append(delList, item)
+	}
+	return
 }
 
 // 更新动作数据
@@ -322,7 +466,7 @@ func (a *Menu) updateActions(ctx context.Context, menuID string, oldItems, newIt
 		}
 
 		// 计算需要更新的资源配置（只包括新增和删除的，更新的不关心）
-		addResources, delResources := a.compareResources(ctx, oitem.Resources, item.Resources)
+		addResources, delResources := a.compareActionResources(ctx, oitem.Resources, item.Resources)
 		for _, aritem := range addResources {
 			aritem.ID = iutil.NewID()
 			aritem.ActionID = oitem.ID
@@ -363,8 +507,8 @@ func (a *Menu) compareActions(ctx context.Context, oldActions, newActions schema
 	return
 }
 
-// 对比资源列表
-func (a *Menu) compareResources(ctx context.Context, oldResources, newResources schema.MenuActionResources) (addList, delList schema.MenuActionResources) {
+// 对比动作资源列表
+func (a *Menu) compareActionResources(ctx context.Context, oldResources, newResources schema.MenuActionResources) (addList, delList schema.MenuActionResources) {
 	mOldResources := oldResources.ToMap()
 	mNewResources := newResources.ToMap()
 
@@ -426,6 +570,11 @@ func (a *Menu) Delete(ctx context.Context, id string) error {
 	}
 
 	return ExecTrans(ctx, a.TransModel, func(ctx context.Context) error {
+		err = a.MenuResourceModel.DeleteByMenuID(ctx, id)
+		if err != nil {
+			return err
+		}
+
 		err = a.MenuActionResourceModel.DeleteByMenuID(ctx, id)
 		if err != nil {
 			return err

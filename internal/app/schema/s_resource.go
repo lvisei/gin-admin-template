@@ -11,7 +11,7 @@ type ResourceCreateParams struct {
 	Group       string `json:"group" binding:"required"`  // 资源组
 	Path        string `json:"path" binding:"required"`   // 资源请求路径（支持/:id匹配）
 	Method      string `json:"method" binding:"required"` // 资源请求方式(支持正则)
-	Description string `json:"description"`               // 接口描述
+	Description string `json:"description"`               // 资源描述
 }
 
 // Resource 资源管理对象

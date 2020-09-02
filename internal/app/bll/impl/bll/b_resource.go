@@ -38,8 +38,29 @@ func (a *Resource) Get(ctx context.Context, id string, opts ...schema.ResourceGe
 	return item, nil
 }
 
+func (a *Resource) checkResource(ctx context.Context, item schema.Resource) error {
+	result, err := a.ResourceModel.Query(ctx, schema.ResourceQueryParam{
+		PaginationParam: schema.PaginationParam{
+			OnlyCount: true,
+		},
+		Path:   item.Path,
+		Method: item.Method,
+		Group:  item.Group,
+	})
+	if err != nil {
+		return err
+	} else if result.PageResult.Total > 0 {
+		return errors.New400Response("资源已经存在")
+	}
+	return nil
+}
+
 // Create 创建数据
 func (a *Resource) Create(ctx context.Context, item schema.Resource) (*schema.IDResult, error) {
+	if err := a.checkResource(ctx, item); err != nil {
+		return nil, err
+	}
+
 	item.ID = iutil.NewID()
 	err := a.ResourceModel.Create(ctx, item)
 	if err != nil {

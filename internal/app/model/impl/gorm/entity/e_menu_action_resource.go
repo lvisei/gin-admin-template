@@ -26,9 +26,10 @@ func (a SchemaMenuActionResource) ToMenuActionResource() *MenuActionResource {
 // MenuActionResource 菜单动作关联资源实体
 type MenuActionResource struct {
 	Model
-	ActionID string `gorm:"column:action_id;size:36;index;default:'';not null;"` // 菜单动作ID
-	Method   string `gorm:"column:method;size:100;default:'';not null;"`         // 资源请求方式(支持正则)
-	Path     string `gorm:"column:path;size:100;default:'';not null;"`           // 资源请求路径（支持/:id匹配）
+	ActionID   string `gorm:"column:action_id;size:36;index;default:'';not null;"` // 菜单动作ID
+	ResourceID string `gorm:"column:resource_id;size:36;"`                         // 资源ID
+	// Method   string `gorm:"column:method;size:100;default:'';not null;"`         // 资源请求方式(支持正则)
+	// Path     string `gorm:"column:path;size:100;default:'';not null;"`           // 资源请求路径（支持/:id匹配）
 }
 
 // ToSchemaMenuActionResource 转换为菜单动作关联资源对象
