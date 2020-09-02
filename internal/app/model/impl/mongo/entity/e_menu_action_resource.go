@@ -26,10 +26,11 @@ func (a SchemaMenuActionResource) ToMenuActionResource() *MenuActionResource {
 
 // MenuActionResource 菜单动作关联资源实体
 type MenuActionResource struct {
-	Model    `bson:",inline"`
-	ActionID string `bson:"action_id"` // 菜单动作ID
-	Method   string `bson:"method"`    // 资源请求方式(支持正则)
-	Path     string `bson:"path"`      // 资源请求路径（支持/:id匹配）
+	Model      `bson:",inline"`
+	ActionID   string `bson:"action_id"`   // 菜单动作ID
+	ResourceID string `bson:"resource_id"` // 资源ID
+	// Method   string `bson:"method"`    // 资源请求方式(支持正则)
+	// Path     string `bson:"path"`      // 资源请求路径（支持/:id匹配）
 }
 
 // CollectionName 集合名

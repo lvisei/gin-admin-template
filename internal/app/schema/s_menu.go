@@ -261,11 +261,11 @@ func (a MenuActions) ToMenuIDMap() map[string]MenuActions {
 type MenuActionResource struct {
 	ID          string `yaml:"-" json:"id"`                             // 唯一标识
 	ActionID    string `yaml:"-" json:"actionId"`                       // 菜单动作ID
-	ResourceID  string `yaml:"-" json:"resource_id"`                    // 资源ID
-	Method      string `yaml:"method" binding:"required" json:"method"` // 资源请求方式(支持正则)
-	Path        string `yaml:"path" binding:"required" json:"path"`     // 资源请求路径（支持/:id匹配）
-	Group       string `yaml:"group" binding:"required" json:"-"`       // 资源组
-	Description string `yaml:"description" json:"-"`                    // 资源描述
+	ResourceID  string `yaml:"-" json:"resourceId"`                     // 资源ID
+	Method      string `yaml:"method" binding:"required" json:"-"` // 资源请求方式(支持正则)
+	Path        string `yaml:"path" binding:"required" json:"-"`     // 资源请求路径（支持/:id匹配）
+	Group       string `yaml:"group" binding:"required" json:"-"`   // 资源组
+	Description string `yaml:"description" json:"-"`          // 资源描述
 }
 
 // MenuActionResourceQueryParam 查询条件
@@ -311,13 +311,13 @@ func (a MenuActionResources) ToActionIDMap() map[string]MenuActionResources {
 
 // MenuResource 菜单资源对象
 type MenuResource struct {
-	ID          string `yaml:"-" json:"id"`                         // 唯一标识
-	MenuID      string `yaml:"-" json:"menu_id" binding:"required"` // 菜单ID
-	ResourceID  string `yaml:"-" json:"resource_id"`                // 资源ID
-	Group       string `yaml:"group" binding:"required" json:"-"`   // 资源组
-	Method      string `yaml:"method" binding:"required" json:"-"`  // 资源请求方式(支持正则)
-	Path        string `yaml:"path" binding:"required" json:"-"`    // 资源请求路径（支持/:id匹配）
-	Description string `yaml:"description" json:"-"`                // 资源描述
+	ID          string `yaml:"-" json:"id"`                        // 唯一标识
+	MenuID      string `yaml:"-" json:"menuId" binding:"required"` // 菜单ID
+	ResourceID  string `yaml:"-" json:"resourceId"`                // 资源ID
+	Group       string `yaml:"group" binding:"required" json:"-"`  // 资源组
+	Method      string `yaml:"method" binding:"required" json:"-"` // 资源请求方式(支持正则)
+	Path        string `yaml:"path" binding:"required" json:"-"`   // 资源请求路径（支持/:id匹配）
+	Description string `yaml:"description" json:"-"`               // 资源描述
 }
 
 func (a *MenuResource) String() string {

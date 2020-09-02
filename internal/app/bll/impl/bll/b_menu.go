@@ -80,7 +80,7 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 			if v := item.ShowStatus; v > 0 {
 				sitem.ShowStatus = v
 			}
-			
+
 			err := a.createResources(ctx, sitem)
 			if err != nil {
 				return err
