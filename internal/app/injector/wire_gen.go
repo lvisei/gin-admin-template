@@ -25,6 +25,9 @@ func BuildInjector() (*Injector, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
+	resource := &model.Resource{
+		DB: db,
+	}
 	role := &model.Role{
 		DB: db,
 	}
@@ -34,6 +37,9 @@ func BuildInjector() (*Injector, func(), error) {
 	menuActionResource := &model.MenuActionResource{
 		DB: db,
 	}
+	menuResource := &model.MenuResource{
+		DB: db,
+	}
 	user := &model.User{
 		DB: db,
 	}
@@ -41,11 +47,13 @@ func BuildInjector() (*Injector, func(), error) {
 		DB: db,
 	}
 	casbinAdapter := &adapter.CasbinAdapter{
-		RoleModel:         role,
-		RoleMenuModel:     roleMenu,
-		MenuResourceModel: menuActionResource,
-		UserModel:         user,
-		UserRoleModel:     userRole,
+		ResourceModel:           resource,
+		RoleModel:               role,
+		RoleMenuModel:           roleMenu,
+		MenuActionResourceModel: menuActionResource,
+		MenuResourceModel:       menuResource,
+		UserModel:               user,
+		UserRoleModel:           userRole,
 	}
 	syncedEnforcer, cleanup3, err := InitCasbin(casbinAdapter)
 	if err != nil {
@@ -82,12 +90,6 @@ func BuildInjector() (*Injector, func(), error) {
 		LoginBll: login,
 	}
 	trans := &model.Trans{
-		DB: db,
-	}
-	menuResource := &model.MenuResource{
-		DB: db,
-	}
-	resource := &model.Resource{
 		DB: db,
 	}
 	bllMenu := &bll.Menu{

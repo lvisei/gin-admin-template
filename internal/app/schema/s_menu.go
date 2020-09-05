@@ -357,3 +357,28 @@ func (a MenuResources) ToMap() map[string]*MenuResource {
 	}
 	return m
 }
+
+// ToMenuIDMap 转换为菜单ID映射
+func (a MenuResources) ToMenuIDMap() map[string]MenuResources {
+	m := make(map[string]MenuResources)
+	for _, item := range a {
+		m[item.MenuID] = append(m[item.MenuID], item)
+	}
+	return m
+}
+
+// ToMenuIDs 转换为菜单ID列表
+func (a MenuResources) ToMenuIDs() []string {
+	var idList []string
+	m := make(map[string]struct{})
+
+	for _, item := range a {
+		if _, ok := m[item.MenuID]; ok {
+			continue
+		}
+		idList = append(idList, item.MenuID)
+		m[item.MenuID] = struct{}{}
+	}
+
+	return idList
+}
