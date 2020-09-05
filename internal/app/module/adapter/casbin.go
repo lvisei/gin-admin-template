@@ -19,11 +19,13 @@ var CasbinAdapterSet = wire.NewSet(wire.Struct(new(CasbinAdapter), "*"), wire.Bi
 
 // CasbinAdapter casbin适配器
 type CasbinAdapter struct {
-	RoleModel         model.IRole
-	RoleMenuModel     model.IRoleMenu
-	MenuResourceModel model.IMenuActionResource
-	UserModel         model.IUser
-	UserRoleModel     model.IUserRole
+	ResourceModel           model.IResource
+	RoleModel               model.IRole
+	RoleMenuModel           model.IRoleMenu
+	MenuActionResourceModel model.IMenuActionResource
+	MenuResourceModel       model.IMenuResource
+	UserModel               model.IUser
+	UserRoleModel           model.IUserRole
 }
 
 // LoadPolicy loads all policy rules from the storage.
@@ -46,6 +48,14 @@ func (a *CasbinAdapter) LoadPolicy(model casbinModel.Model) error {
 
 // 加载角色策略(p,role_id,path,method)
 func (a *CasbinAdapter) loadRolePolicy(ctx context.Context, m casbinModel.Model) error {
+	resourceResult, err := a.ResourceModel.Query(ctx, schema.ResourceQueryParam{})
+	if err != nil {
+		return err
+	} else if len(resourceResult.Data) == 0 {
+		return nil
+	}
+	resources := resourceResult.Data.ToMap()
+
 	roleResult, err := a.RoleModel.Query(ctx, schema.RoleQueryParam{
 		Status: 1,
 	})
@@ -61,27 +71,53 @@ func (a *CasbinAdapter) loadRolePolicy(ctx context.Context, m casbinModel.Model)
 	}
 	mRoleMenus := roleMenuResult.Data.ToRoleIDMap()
 
-	menuResourceResult, err := a.MenuResourceModel.Query(ctx, schema.MenuActionResourceQueryParam{})
+	menuResourceResult, err := a.MenuResourceModel.Query(ctx, schema.MenuResourceQueryParam{})
 	if err != nil {
 		return err
 	}
-	mMenuResources := menuResourceResult.Data.ToActionIDMap()
+	mMenuResources := menuResourceResult.Data.ToMenuIDMap()
+
+	menuActionResourceResult, err := a.MenuActionResourceModel.Query(ctx, schema.MenuActionResourceQueryParam{})
+	if err != nil {
+		return err
+	}
+	mActionMenuResources := menuActionResourceResult.Data.ToActionIDMap()
+
+	getPolicyLine := func(roleId, resourceID string, mcache map[string]struct{}) string {
+		if resource, ok := resources[resourceID]; ok {
+			if resource.Path == "" || resource.Method == "" {
+				return ""
+			} else if _, ok := mcache[resource.Path+resource.Method]; ok {
+				return ""
+			}
+			mcache[resource.Path+resource.Method] = struct{}{}
+			line := fmt.Sprintf("p,%s,%s,%s", roleId, resource.Path, resource.Method)
+			return line
+		} else {
+			return ""
+		}
+	}
 
 	for _, item := range roleResult.Data {
 		mcache := make(map[string]struct{})
-		if rms, ok := mRoleMenus[item.ID]; ok {
-			for _, actionID := range rms.ToActionIDs() {
-				if mrs, ok := mMenuResources[actionID]; ok {
-					for _, mr := range mrs {
-						if mr.Path == "" || mr.Method == "" {
-							continue
-						} else if _, ok := mcache[mr.Path+mr.Method]; ok {
-							continue
+		if roleMenus, ok := mRoleMenus[item.ID]; ok {
+			for _, actionID := range roleMenus.ToActionIDs() {
+				if menuActionResources, ok := mActionMenuResources[actionID]; ok {
+					for _, menuActionResource := range menuActionResources {
+						if line := getPolicyLine(item.ID, menuActionResource.ResourceID, mcache); line != "" {
+							persist.LoadPolicyLine(line, m)
 						}
-						mcache[mr.Path+mr.Method] = struct{}{}
-						line := fmt.Sprintf("p,%s,%s,%s", item.ID, mr.Path, mr.Method)
-						persist.LoadPolicyLine(line, m)
 					}
+				}
+			}
+			for _, menuID := range roleMenus.ToMenuIDs() {
+				if menuResources, ok := mMenuResources[menuID]; ok {
+					for _, menuResource := range menuResources {
+						if line := getPolicyLine(item.ID, menuResource.ResourceID, mcache); line != "" {
+							persist.LoadPolicyLine(line, m)
+						}
+					}
+
 				}
 			}
 		}

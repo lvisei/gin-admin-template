@@ -53,3 +53,12 @@ type ResourceQueryResult struct {
 
 // Resources 资源管理列表
 type Resources []*Resource
+
+// ToMap 转换为map
+func (a Resources) ToMap() map[string]*Resource {
+	m := make(map[string]*Resource)
+	for _, item := range a {
+		m[item.ID] = item
+	}
+	return m
+}
