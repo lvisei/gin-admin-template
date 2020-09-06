@@ -35,6 +35,25 @@ func (a *Resource) Query(c *gin.Context) {
 	ginplus.ResPage(c, result.Data, result.PageResult)
 }
 
+// QuerySelect 查询选择数据
+func (a *Resource) QuerySelect(c *gin.Context) {
+	ctx := c.Request.Context()
+	var params schema.ResourceQueryParam
+	if err := ginplus.ParseQuery(c, &params); err != nil {
+		ginplus.ResError(c, err)
+		return
+	}
+
+	result, err := a.ResourceBll.Query(ctx, params, schema.ResourceQueryOptions{
+		OrderFields: schema.NewOrderFields(schema.NewOrderField("\"group\"", schema.OrderByASC)),
+	})
+	if err != nil {
+		ginplus.ResError(c, err)
+		return
+	}
+	ginplus.ResList(c, result.Data)
+}
+
 // Get 查询指定数据
 func (a *Resource) Get(c *gin.Context) {
 	ctx := c.Request.Context()

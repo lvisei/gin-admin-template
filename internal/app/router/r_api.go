@@ -106,6 +106,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gResource.PUT(":id", a.ResourceAPI.Update)
 			gResource.DELETE(":id", a.ResourceAPI.Delete)
 		}
+		v1.GET("/resources.select", a.ResourceAPI.QuerySelect)
 
 	}
 }
