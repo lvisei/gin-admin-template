@@ -35,7 +35,7 @@ func (a *Resource) Query(ctx context.Context, params schema.ResourceQueryParam, 
 
 	db := entity.GetResourceDB(ctx, a.DB)
 	if v := params.Group; v != "" {
-		db = db.Where("\"group\"=?", v)
+		db = db.Where("`group`=?", v)
 	}
 	if v := params.Path; v != "" {
 		db = db.Where("path=?", v)
@@ -45,7 +45,7 @@ func (a *Resource) Query(ctx context.Context, params schema.ResourceQueryParam, 
 	}
 	if v := params.QueryValue; v != "" {
 		v = "%" + v + "%"
-		db = db.Where("group LIKE ? OR description LIKE ?", v, v)
+		db = db.Where("`group` LIKE ? OR description LIKE ?", v, v)
 	}
 
 	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))

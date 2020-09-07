@@ -45,7 +45,7 @@ func (a *Resource) QuerySelect(c *gin.Context) {
 	}
 
 	result, err := a.ResourceBll.Query(ctx, params, schema.ResourceQueryOptions{
-		OrderFields: schema.NewOrderFields(schema.NewOrderField("\"group\"", schema.OrderByASC)),
+		OrderFields: schema.NewOrderFields(schema.NewOrderField("`group`", schema.OrderByASC)),
 	})
 	if err != nil {
 		ginplus.ResError(c, err)

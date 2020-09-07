@@ -215,6 +215,47 @@
               path: "/api/v1/menus/:id/enable"
               group: 菜单接口
               description: 启用数据
+    - name: 资源管理
+      icon: md-filing
+      routeName: "ResourceManagement"
+      routePath: "resource-management"
+      component: "/system-management/resource-management"
+      sequence: 24
+      actions:
+        - code: add
+          name: 新增
+          resources:
+            - method: POST
+              path: "/api/v1/resources"
+              group: 资源管理
+              description: 创建数据
+        - code: edit
+          name: 编辑
+          resources:
+            - method: GET
+              path: "/api/v1/resources/:id"
+              group: 资源管理
+              description: 查询指定数据
+            - method: PUT
+              path: "/api/v1/resources/:id"
+              group: 资源管理
+              description: 编辑数据
+        - code: del
+          name: 删除
+          resources:
+            - method: DELETE
+              path: "/api/v1/resources/:id"
+              group: 资源管理
+              description: 删除数据
+      resources:
+        - method: GET
+          path: "/api/v1/resources"
+          group: 资源管理
+          description: 分页查询资源
+        - method: GET
+          path: "/api/v1/resources.select"
+          group: 资源管理
+          description: 查询全部资源
 - name: 测试菜单
   icon: md-flask
   routeName: "Example"
