@@ -2,6 +2,7 @@ package bll
 
 import (
 	"context"
+	"github.com/casbin/casbin/v2"
 
 	"gin-admin-template/internal/app/bll"
 	"gin-admin-template/internal/app/iutil"
@@ -18,6 +19,7 @@ var ResourceSet = wire.NewSet(wire.Struct(new(Resource), "*"), wire.Bind(new(bll
 
 // Resource 资源管理
 type Resource struct {
+	Enforcer      *casbin.SyncedEnforcer
 	ResourceModel model.IResource
 }
 
@@ -66,7 +68,7 @@ func (a *Resource) Create(ctx context.Context, item schema.Resource) (*schema.ID
 	if err != nil {
 		return nil, err
 	}
-
+	LoadCasbinPolicy(ctx, a.Enforcer)
 	return schema.NewIDResult(item.ID), nil
 }
 
@@ -82,6 +84,7 @@ func (a *Resource) Update(ctx context.Context, id string, item schema.Resource) 
 	item.Creator = oldItem.Creator
 	item.CreatedAt = oldItem.CreatedAt
 
+	LoadCasbinPolicy(ctx, a.Enforcer)
 	return a.ResourceModel.Update(ctx, id, item)
 }
 
@@ -94,5 +97,6 @@ func (a *Resource) Delete(ctx context.Context, id string) error {
 		return errors.ErrNotFound
 	}
 
+	LoadCasbinPolicy(ctx, a.Enforcer)
 	return a.ResourceModel.Delete(ctx, id)
 }
