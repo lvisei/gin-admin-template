@@ -125,6 +125,7 @@ func BuildInjector() (*Injector, func(), error) {
 	}
 	sys := &api.Sys{}
 	bllResource := &bll.Resource{
+		Enforcer:      syncedEnforcer,
 		ResourceModel: resource,
 	}
 	apiResource := &api.Resource{

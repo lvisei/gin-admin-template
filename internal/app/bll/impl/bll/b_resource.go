@@ -84,8 +84,13 @@ func (a *Resource) Update(ctx context.Context, id string, item schema.Resource) 
 	item.Creator = oldItem.Creator
 	item.CreatedAt = oldItem.CreatedAt
 
+	err = a.ResourceModel.Update(ctx, id, item)
+	if err != nil {
+		return err
+	}
+
 	LoadCasbinPolicy(ctx, a.Enforcer)
-	return a.ResourceModel.Update(ctx, id, item)
+	return nil
 }
 
 // Delete 删除数据
@@ -97,6 +102,11 @@ func (a *Resource) Delete(ctx context.Context, id string) error {
 		return errors.ErrNotFound
 	}
 
+	err = a.ResourceModel.Delete(ctx, id)
+	if err != nil {
+		return err
+	}
+
 	LoadCasbinPolicy(ctx, a.Enforcer)
-	return a.ResourceModel.Delete(ctx, id)
+	return nil
 }
