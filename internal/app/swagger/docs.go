@@ -2637,7 +2637,7 @@ var doc = `{
                 "path"
             ],
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
@@ -2665,7 +2665,7 @@ var doc = `{
                     "description": "资源请求路径（支持/:id匹配）",
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "description": "更新时间",
                     "type": "string"
                 }
