@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"gin-admin-template/internal/app/schema"
-	"gin-admin-template/pkg/unique"
+	"gin-admin-template/pkg/util/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,7 +17,7 @@ func TestRole(t *testing.T) {
 
 	// post /menus
 	addMenuItem := &schema.MenuCreateParams{
-		Name:       unique.MustUUID().String(),
+		Name:       uuid.MustUUID().String(),
 		ShowStatus: 1,
 		Status:     1,
 	}
@@ -29,7 +29,7 @@ func TestRole(t *testing.T) {
 
 	// post /roles
 	addItem := &schema.RoleCreateParams{
-		Name:   unique.MustUUID().String(),
+		Name:   uuid.MustUUID().String(),
 		Status: 1,
 		RoleMenus: schema.RoleMenus{
 			&schema.RoleMenu{
@@ -54,7 +54,7 @@ func TestRole(t *testing.T) {
 
 	// put /roles/:id
 	putItem := getItem
-	putItem.Name = unique.MustUUID().String()
+	putItem.Name = uuid.MustUUID().String()
 	engine.ServeHTTP(w, newPutRequest("%s/%s", putItem, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)

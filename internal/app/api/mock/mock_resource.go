@@ -22,7 +22,7 @@ type Resource struct {
 // @Param group query string false "接口组"
 // @Param path query string false "请求路径"
 // @Param method query string false "请求方式"
-// @Success 200 {array} schema.Resource "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}"
+// @Success 200 {object} schema.ListResult{list=[]schema.Resource} "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
 // @Router /api/v1/resources [get]
@@ -34,7 +34,7 @@ func (a *Resource) Query(c *gin.Context) {
 // @Summary 查询选择数据
 // @Param Authorization header string false "Bearer 用户令牌"
 // @Param queryValue query string false "查询值"
-// @Success 200 {array} schema.Resource "查询结果：{list:资源列表}"
+// @Success 200 {object} schema.Resource "查询结果：{list:资源列表}"
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:未知的查询类型}}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"

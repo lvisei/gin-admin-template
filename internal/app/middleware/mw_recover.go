@@ -3,10 +3,10 @@ package middleware
 import (
 	"bytes"
 	"fmt"
+	"gin-admin-template/internal/app/ginx"
 	"io/ioutil"
 	"runtime"
 
-	"gin-admin-template/internal/app/ginplus"
 	"gin-admin-template/pkg/errors"
 	"gin-admin-template/pkg/logger"
 	"github.com/gin-gonic/gin"
@@ -25,8 +25,8 @@ func RecoveryMiddleware() gin.HandlerFunc {
 		defer func() {
 			if err := recover(); err != nil {
 				stack := stack(3)
-				logger.StartSpan(c.Request.Context()).WithField("stack", string(stack)).Errorf("[panic]: %v", err)
-				ginplus.ResError(c, errors.ErrInternalServer)
+				logger.WithContext(c.Request.Context()).WithField(logger.StackKey, string(stack)).Errorf("[panic]: %v", err)
+				ginx.ResError(c, errors.ErrInternalServer)
 			}
 		}()
 		c.Next()

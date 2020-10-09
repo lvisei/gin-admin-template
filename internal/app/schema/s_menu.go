@@ -1,10 +1,9 @@
 package schema
 
 import (
+	"gin-admin-template/pkg/util/json"
 	"strings"
 	"time"
-
-	"gin-admin-template/pkg/util"
 )
 
 // Menu 菜单对象
@@ -29,7 +28,7 @@ type Menu struct {
 }
 
 func (a *Menu) String() string {
-	return util.JSONMarshalToString(a)
+	return json.MarshalToString(a)
 }
 
 // MenuCreateParams 新增参数
@@ -321,7 +320,7 @@ type MenuResource struct {
 }
 
 func (a *MenuResource) String() string {
-	return util.JSONMarshalToString(a)
+	return json.MarshalToString(a)
 }
 
 // MenuResourceQueryParam 查询条件

@@ -2,10 +2,10 @@ package bson
 
 import (
 	"context"
+	"encoding/json"
 	"time"
 
 	"gin-admin-template/pkg/logger"
-	"gin-admin-template/pkg/util"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -72,13 +72,13 @@ func (h *Hook) Exec(entry *logrus.Entry) error {
 		item.UserID, _ = v.(string)
 		delete(data, logger.UserIDKey)
 	}
-	if v, ok := data[logger.SpanTitleKey]; ok {
-		item.SpanTitle, _ = v.(string)
-		delete(data, logger.SpanTitleKey)
+	if v, ok := data[logger.TagKey]; ok {
+		item.Tag, _ = v.(string)
+		delete(data, logger.TagKey)
 	}
-	if v, ok := data[logger.SpanFunctionKey]; ok {
-		item.SpanFunction, _ = v.(string)
-		delete(data, logger.SpanFunctionKey)
+	if v, ok := data[logger.StackKey]; ok {
+		item.ErrorStack, _ = v.(string)
+		delete(data, logger.StackKey)
 	}
 	if v, ok := data[logger.VersionKey]; ok {
 		item.Version, _ = v.(string)
@@ -86,7 +86,8 @@ func (h *Hook) Exec(entry *logrus.Entry) error {
 	}
 
 	if len(data) > 0 {
-		item.Data = util.JSONMarshalToString(data)
+		b, _ := json.Marshal(data)
+		item.Data = string(b)
 	}
 
 	_, err := h.Collection.InsertOne(context.Background(), item)
@@ -100,14 +101,14 @@ func (h *Hook) Close() error {
 
 // LogItem 存储日志项
 type LogItem struct {
-	ID           string    `bson:"_id"`           // id
-	Level        string    `bson:"level"`         // 日志级别
-	Message      string    `bson:"message"`       // 消息
-	TraceID      string    `bson:"trace_id"`      // 跟踪ID
-	UserID       string    `bson:"user_id"`       // 用户ID
-	SpanTitle    string    `bson:"span_title"`    // 跟踪单元标题
-	SpanFunction string    `bson:"span_function"` // 跟踪单元函数名
-	Data         string    `bson:"data"`          // 日志数据(json)
-	Version      string    `bson:"version"`       // 服务版本号
-	CreatedAt    time.Time `bson:"created_at"`    // 创建时间
+	ID         string    `bson:"_id"`         // id
+	Level      string    `bson:"level"`       // 日志级别
+	TraceID    string    `bson:"trace_id"`    // 跟踪ID
+	UserID     string    `bson:"user_id"`     // 用户ID
+	Tag        string    `bson:"tag"`         // Tag
+	Version    string    `bson:"version"`     // 版本号
+	Message    string    `bson:"message"`     // 消息
+	Data       string    `bson:"data"`        // 日志数据(json)
+	ErrorStack string    `bson:"error_stack"` // Error Stack
+	CreatedAt  time.Time `bson:"created_at"`  // 创建时间
 }

@@ -1,11 +1,11 @@
 package middleware
 
 import (
+	"gin-admin-template/internal/app/ginx"
 	"strconv"
 	"time"
 
 	"gin-admin-template/internal/app/config"
-	"gin-admin-template/internal/app/ginplus"
 	"gin-admin-template/pkg/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
@@ -38,7 +38,7 @@ func RateLimiterMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 			return
 		}
 
-		userID := ginplus.GetUserID(c)
+		userID := ginx.GetUserID(c)
 		if userID != "" {
 			limit := cfg.Count
 			rate, delay, allowed := limiter.AllowMinute(userID, limit)
@@ -48,7 +48,7 @@ func RateLimiterMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 				h.Set("X-RateLimit-Remaining", strconv.FormatInt(limit-rate, 10))
 				delaySec := int64(delay / time.Second)
 				h.Set("X-RateLimit-Delay", strconv.FormatInt(delaySec, 10))
-				ginplus.ResError(c, errors.ErrTooManyRequests)
+				ginx.ResError(c, errors.ErrTooManyRequests)
 				return
 			}
 		}

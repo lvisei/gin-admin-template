@@ -1,10 +1,10 @@
 package api
 
 import (
+	"gin-admin-template/internal/app/ginx"
 	"strings"
 
 	"gin-admin-template/internal/app/bll"
-	"gin-admin-template/internal/app/ginplus"
 	"gin-admin-template/internal/app/schema"
 	"gin-admin-template/pkg/errors"
 	"github.com/gin-gonic/gin"
@@ -16,15 +16,15 @@ var UserSet = wire.NewSet(wire.Struct(new(User), "*"))
 
 // User 用户管理
 type User struct {
-	UserBll bll.IUser
+	UserBll *bll.User
 }
 
 // Query 查询数据
 func (a *User) Query(c *gin.Context) {
 	ctx := c.Request.Context()
 	var params schema.UserQueryParam
-	if err := ginplus.ParseQuery(c, &params); err != nil {
-		ginplus.ResError(c, err)
+	if err := ginx.ParseQuery(c, &params); err != nil {
+		ginx.ResError(c, err)
 		return
 	}
 	if v := c.Query("roleIDs"); v != "" {
@@ -34,10 +34,10 @@ func (a *User) Query(c *gin.Context) {
 	params.Pagination = true
 	result, err := a.UserBll.QueryShow(ctx, params)
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResPage(c, result.Data, result.PageResult)
+	ginx.ResPage(c, result.Data, result.PageResult)
 }
 
 // Get 查询指定数据
@@ -45,61 +45,61 @@ func (a *User) Get(c *gin.Context) {
 	ctx := c.Request.Context()
 	item, err := a.UserBll.Get(ctx, c.Param("id"))
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResSuccess(c, item.CleanSecure())
+	ginx.ResSuccess(c, item.CleanSecure())
 }
 
 // Create 创建数据
 func (a *User) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var item schema.User
-	if err := ginplus.ParseJSON(c, &item); err != nil {
-		ginplus.ResError(c, err)
+	if err := ginx.ParseJSON(c, &item); err != nil {
+		ginx.ResError(c, err)
 		return
 	} else if item.Password == "" {
-		ginplus.ResError(c, errors.New400Response("密码不能为空"))
+		ginx.ResError(c, errors.New400Response("密码不能为空"))
 		return
 	}
 
-	item.Creator = ginplus.GetUserID(c)
+	item.Creator = ginx.GetUserID(c)
 	result, err := a.UserBll.Create(ctx, item)
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResSuccess(c, result)
+	ginx.ResSuccess(c, result)
 }
 
 // Update 更新数据
 func (a *User) Update(c *gin.Context) {
 	ctx := c.Request.Context()
 	var item schema.User
-	if err := ginplus.ParseJSON(c, &item); err != nil {
-		ginplus.ResError(c, err)
+	if err := ginx.ParseJSON(c, &item); err != nil {
+		ginx.ResError(c, err)
 		return
 	}
 
 	err := a.UserBll.Update(ctx, c.Param("id"), item)
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResOK(c)
+	ginx.ResOK(c)
 }
 
 // ResetPassword 重置密码
 func (a *User) ResetPassword(c *gin.Context) {
 	ctx := c.Request.Context()
-	password := string(ginplus.GetBody(c))
+	password := string(ginx.GetBody(c))
 
 	err := a.UserBll.ResetPassword(ctx, c.Param("id"), password)
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResOK(c)
+	ginx.ResOK(c)
 }
 
 // Delete 删除数据
@@ -107,10 +107,10 @@ func (a *User) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
 	err := a.UserBll.Delete(ctx, c.Param("id"))
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResOK(c)
+	ginx.ResOK(c)
 }
 
 // Enable 启用数据
@@ -118,10 +118,10 @@ func (a *User) Enable(c *gin.Context) {
 	ctx := c.Request.Context()
 	err := a.UserBll.UpdateStatus(ctx, c.Param("id"), 1)
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResOK(c)
+	ginx.ResOK(c)
 }
 
 // Disable 禁用数据
@@ -129,8 +129,8 @@ func (a *User) Disable(c *gin.Context) {
 	ctx := c.Request.Context()
 	err := a.UserBll.UpdateStatus(ctx, c.Param("id"), 2)
 	if err != nil {
-		ginplus.ResError(c, err)
+		ginx.ResError(c, err)
 		return
 	}
-	ginplus.ResOK(c)
+	ginx.ResOK(c)
 }

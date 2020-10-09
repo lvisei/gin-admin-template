@@ -1,9 +1,8 @@
 package schema
 
 import (
+	"gin-admin-template/pkg/util/json"
 	"time"
-
-	"gin-admin-template/pkg/util"
 )
 
 // ResourceCreateParams 新增参数
@@ -24,7 +23,7 @@ type Resource struct {
 }
 
 func (a *Resource) String() string {
-	return util.JSONMarshalToString(a)
+	return json.MarshalToString(a)
 }
 
 // ResourceQueryParam 查询条件

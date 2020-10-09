@@ -2,11 +2,11 @@ package config
 
 import (
 	"fmt"
+	"gin-admin-template/pkg/util/json"
 	"os"
 	"strings"
 	"sync"
 
-	"gin-admin-template/pkg/util"
 	"github.com/koding/multiconfig"
 )
 
@@ -47,7 +47,7 @@ func MustLoad(fpaths ...string) {
 // PrintWithJSON 基于JSON格式输出配置
 func PrintWithJSON() {
 	if C.PrintConfig {
-		b, err := util.JSONMarshalIndent(C, "", " ")
+		b, err := json.MarshalIndent(C, "", " ")
 		if err != nil {
 			os.Stdout.WriteString("[CONFIG] JSON marshal error: " + err.Error())
 			return
@@ -81,13 +81,6 @@ type Config struct {
 	Postgres     Postgres
 	Sqlite3      Sqlite3
 	Mongo        Mongo
-	UniqueID     struct {
-		Type      string
-		Snowflake struct {
-			Node  int64
-			Epoch int64
-		}
-	}
 }
 
 // IsDebugMode 是否是debug模式
@@ -177,6 +170,7 @@ type HTTP struct {
 	KeyFile          string
 	ShutdownTimeout  int
 	MaxContentLength int64
+	MaxLoggerLength  int `default:"4096"`
 }
 
 // Monitor 监控配置参数

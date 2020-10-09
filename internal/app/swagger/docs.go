@@ -64,10 +64,22 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.Demo"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.Demo"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
@@ -417,10 +429,22 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.Menu"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.Menu"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
@@ -515,10 +539,7 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:列表数据}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.MenuTree"
-                            }
+                            "$ref": "#/definitions/schema.MenuTree"
                         }
                     },
                     "401": {
@@ -778,7 +799,22 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:菜单树}",
                         "schema": {
-                            "$ref": "#/definitions/schema.Menu"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.MenuTree"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
@@ -1132,10 +1168,22 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.Resource"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.Resource"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
@@ -1226,10 +1274,7 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:资源列表}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.Resource"
-                            }
+                            "$ref": "#/definitions/schema.Resource"
                         }
                     },
                     "400": {
@@ -1444,10 +1489,22 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.Role"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.Role"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
@@ -1542,10 +1599,7 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:角色列表}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.Role"
-                            }
+                            "$ref": "#/definitions/schema.Role"
                         }
                     },
                     "400": {
@@ -1847,10 +1901,22 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.UserShow"
-                            }
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/schema.ListResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/schema.UserShow"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "401": {
@@ -2278,6 +2344,18 @@ var doc = `{
                 }
             }
         },
+        "schema.ListResult": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "object"
+                },
+                "pagination": {
+                    "type": "object",
+                    "$ref": "#/definitions/schema.PaginationResult"
+                }
+            }
+        },
         "schema.LoginCaptcha": {
             "type": "object",
             "properties": {
@@ -2627,6 +2705,20 @@ var doc = `{
             "type": "array",
             "items": {
                 "$ref": "#/definitions/schema.MenuTree"
+            }
+        },
+        "schema.PaginationResult": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
             }
         },
         "schema.Resource": {
@@ -3086,7 +3178,7 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "6.4.2",
+	Version:     "7.0.0",
 	Host:        "",
 	BasePath:    "/",
 	Schemes:     []string{"http", "https"},
