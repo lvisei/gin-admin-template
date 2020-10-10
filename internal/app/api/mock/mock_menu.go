@@ -34,7 +34,7 @@ func (a *Menu) Query(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Param status query int false "状态(1:启用 2:禁用)"
 // @Param parentID query string false "父级ID"
-// @Success 200 {object} schema.MenuTree "查询结果：{list:列表数据}"
+// @Success 200 {object} schema.MenuTrees "查询结果：{list:列表数据}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
 // @Router /api/v1/menus.tree [get]

@@ -18,7 +18,7 @@ func GetRootUser() *User {
 		UserCreateParams: UserCreateParams{
 			UserName: user.UserName,
 			RealName: user.RealName,
-			Password: hash.MD5String(user.Password),
+			Password: hash.SHA1String(user.Password),
 		},
 	}
 }

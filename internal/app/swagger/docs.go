@@ -539,7 +539,7 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:列表数据}",
                         "schema": {
-                            "$ref": "#/definitions/schema.MenuTree"
+                            "$ref": "#/definitions/schema.MenuTrees"
                         }
                     },
                     "401": {
@@ -1274,7 +1274,7 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:资源列表}",
                         "schema": {
-                            "$ref": "#/definitions/schema.Resource"
+                            "$ref": "#/definitions/schema.Resources"
                         }
                     },
                     "400": {
@@ -1599,7 +1599,7 @@ var doc = `{
                     "200": {
                         "description": "查询结果：{list:角色列表}",
                         "schema": {
-                            "$ref": "#/definitions/schema.Role"
+                            "$ref": "#/definitions/schema.Roles"
                         }
                     },
                     "400": {
@@ -2711,12 +2711,15 @@ var doc = `{
             "type": "object",
             "properties": {
                 "current": {
+                    "description": "页索引",
                     "type": "integer"
                 },
                 "pageSize": {
+                    "description": "页大小",
                     "type": "integer"
                 },
                 "total": {
+                    "description": "总数量",
                     "type": "integer"
                 }
             }
@@ -2787,6 +2790,12 @@ var doc = `{
                     "description": "资源请求路径（支持/:id匹配）",
                     "type": "string"
                 }
+            }
+        },
+        "schema.Resources": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/schema.Resource"
             }
         },
         "schema.Role": {

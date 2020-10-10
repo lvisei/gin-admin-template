@@ -33,7 +33,7 @@ func (a *Role) Query(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Param queryValue query string false "查询值"
 // @Param status query int false "状态(1:启用 2:禁用)"
-// @Success 200 {object} schema.Role "查询结果：{list:角色列表}"
+// @Success 200 {object} schema.Roles "查询结果：{list:角色列表}"
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:未知的查询类型}}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"

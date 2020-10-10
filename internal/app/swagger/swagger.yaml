@@ -320,10 +320,13 @@ definitions:
   schema.PaginationResult:
     properties:
       current:
+        description: 页索引
         type: integer
       pageSize:
+        description: 页大小
         type: integer
       total:
+        description: 总数量
         type: integer
     type: object
   schema.Resource:
@@ -376,6 +379,10 @@ definitions:
     - method
     - path
     type: object
+  schema.Resources:
+    items:
+      $ref: '#/definitions/schema.Resource'
+    type: array
   schema.Role:
     properties:
       createdAt:
@@ -969,7 +976,7 @@ paths:
         "200":
           description: 查询结果：{list:列表数据}
           schema:
-            $ref: '#/definitions/schema.MenuTree'
+            $ref: '#/definitions/schema.MenuTrees'
         "401":
           description: '{error:{code:0,message:未授权}}'
           schema:
@@ -1431,7 +1438,7 @@ paths:
         "200":
           description: 查询结果：{list:资源列表}
           schema:
-            $ref: '#/definitions/schema.Resource'
+            $ref: '#/definitions/schema.Resources'
         "400":
           description: '{error:{code:0,message:未知的查询类型}}'
           schema:
@@ -1636,7 +1643,7 @@ paths:
         "200":
           description: 查询结果：{list:角色列表}
           schema:
-            $ref: '#/definitions/schema.Role'
+            $ref: '#/definitions/schema.Roles'
         "400":
           description: '{error:{code:0,message:未知的查询类型}}'
           schema:
