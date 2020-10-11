@@ -1,7 +1,7 @@
 package api
 
 import (
-	"gin-admin-template/internal/app/ginplus"
+	"gin-admin-template/internal/app/ginx"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 )
@@ -22,5 +22,5 @@ func (a *Sys) LogCount(c *gin.Context) {
 		"messages":  random(10, 100),
 	}
 
-	ginplus.ResSuccess(c, data)
+	ginx.ResSuccess(c, data)
 }

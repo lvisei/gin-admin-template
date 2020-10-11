@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"gin-admin-template/internal/app/schema"
-	"gin-admin-template/pkg/unique"
-	"gin-admin-template/pkg/util"
+	"gin-admin-template/pkg/util/hash"
+	"gin-admin-template/pkg/util/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,7 +18,7 @@ func TestUser(t *testing.T) {
 
 	// post /menus
 	addMenuItem := &schema.MenuCreateParams{
-		Name:       unique.MustUUID().String(),
+		Name:       uuid.MustUUID().String(),
 		ShowStatus: 1,
 		Status:     1,
 	}
@@ -30,7 +30,7 @@ func TestUser(t *testing.T) {
 
 	// post /roles
 	addRoleItem := &schema.RoleCreateParams{
-		Name:   unique.MustUUID().String(),
+		Name:   uuid.MustUUID().String(),
 		Status: 1,
 		RoleMenus: schema.RoleMenus{
 			&schema.RoleMenu{
@@ -46,10 +46,10 @@ func TestUser(t *testing.T) {
 
 	// post /users
 	addItem := &schema.UserCreateParams{
-		UserName: unique.MustUUID().String(),
-		RealName: unique.MustUUID().String(),
+		UserName: uuid.MustUUID().String(),
+		RealName: uuid.MustUUID().String(),
 		Status:   1,
-		Password: util.MD5HashString("test"),
+		Password: hash.MD5String("test"),
 		UserRoles: schema.UserRoles{
 			&schema.UserRole{
 				RoleID: addRoleItemRes.ID,
@@ -74,14 +74,14 @@ func TestUser(t *testing.T) {
 
 	// put /users/:id
 	putItem := getItem
-	putItem.UserName = unique.MustUUID().String()
+	putItem.UserName = uuid.MustUUID().String()
 	engine.ServeHTTP(w, newPutRequest("%s/%s", putItem, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)
 	assert.Nil(t, err)
 
 	// put /user/:id/rest
-	password := unique.MustUUID().String()
+	password := uuid.MustUUID().String()
 	engine.ServeHTTP(w, newPutRequest("%s/%s/rest", password, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)

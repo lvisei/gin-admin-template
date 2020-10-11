@@ -5,7 +5,9 @@ import (
 	"time"
 
 	"gin-admin-template/internal/app/config"
-	"gin-admin-template/pkg/util"
+	"gin-admin-template/pkg/util/hash"
+	"gin-admin-template/pkg/util/json"
+	"gin-admin-template/pkg/util/structure"
 )
 
 // GetRootUser 获取root用户
@@ -16,7 +18,7 @@ func GetRootUser() *User {
 		UserCreateParams: UserCreateParams{
 			UserName: user.UserName,
 			RealName: user.RealName,
-			Password: util.SHA1HashString(user.Password),
+			Password: hash.SHA1String(user.Password),
 		},
 	}
 }
@@ -48,7 +50,7 @@ type User struct {
 }
 
 func (a *User) String() string {
-	return util.JSONMarshalToString(a)
+	return json.MarshalToString(a)
 }
 
 // CleanSecure 清理安全数据
@@ -102,7 +104,7 @@ func (a Users) ToUserShows(mUserRoles map[string]UserRoles, mRoles map[string]*R
 	list := make(UserShows, len(a))
 	for i, item := range a {
 		showItem := new(UserShow)
-		util.StructMapToStruct(item, showItem)
+		structure.Copy(item, showItem)
 		for _, roleID := range mUserRoles[item.ID].ToRoleIDs() {
 			if v, ok := mRoles[roleID]; ok {
 				showItem.Roles = append(showItem.Roles, v)

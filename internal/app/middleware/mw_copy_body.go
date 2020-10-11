@@ -3,12 +3,12 @@ package middleware
 import (
 	"bytes"
 	"compress/gzip"
+	"gin-admin-template/internal/app/ginx"
 	"io"
 	"io/ioutil"
 	"net/http"
 
 	"gin-admin-template/internal/app/config"
-	"gin-admin-template/internal/app/ginplus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -44,7 +44,7 @@ func CopyBodyMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 		c.Request.Body.Close()
 		bf := bytes.NewBuffer(requestBody)
 		c.Request.Body = http.MaxBytesReader(c.Writer, ioutil.NopCloser(bf), maxMemory)
-		c.Set(ginplus.ReqBodyKey, requestBody)
+		c.Set(ginx.ReqBodyKey, requestBody)
 
 		c.Next()
 	}

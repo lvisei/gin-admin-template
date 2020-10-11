@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"gin-admin-template/internal/app/schema"
-	"gin-admin-template/pkg/unique"
+	"gin-admin-template/pkg/util/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,7 +17,7 @@ func TestMenu(t *testing.T) {
 
 	// post /menus
 	addItem := &schema.MenuCreateParams{
-		Name:       unique.MustUUID().String(),
+		Name:       uuid.MustUUID().String(),
 		ShowStatus: 1,
 		Status:     1,
 	}
@@ -39,7 +39,7 @@ func TestMenu(t *testing.T) {
 
 	// put /menus/:id
 	putItem := getItem
-	putItem.Name = unique.MustUUID().String()
+	putItem.Name = uuid.MustUUID().String()
 	engine.ServeHTTP(w, newPutRequest("%s/%s", putItem, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)

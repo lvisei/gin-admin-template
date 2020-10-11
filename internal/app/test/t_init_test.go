@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"gin-admin-template/internal/app"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
 
 	"gin-admin-template/internal/app/config"
-	"gin-admin-template/internal/app/injector"
 	"github.com/gin-gonic/gin"
 )
 
@@ -35,7 +35,7 @@ func init() {
 	config.C.Gorm.Debug = false
 	config.C.Gorm.DBType = "sqlite3"
 
-	injector, _, err := injector.BuildInjector()
+	injector, _, err := app.BuildInjector()
 	if err != nil {
 		panic(err)
 	}

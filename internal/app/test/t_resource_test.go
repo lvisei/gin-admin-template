@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"gin-admin-template/internal/app/schema"
-	"gin-admin-template/pkg/unique"
+	"gin-admin-template/pkg/util/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,10 +17,10 @@ func TestResource(t *testing.T) {
 
 	// post /resources
 	addItem := &schema.ResourceCreateParams{
-		Group:       unique.MustUUID().String(),
-		Path:        unique.MustUUID().String(),
-		Method:      unique.MustUUID().String(),
-		Description: unique.MustUUID().String(),
+		Group:       uuid.MustUUID().String(),
+		Path:        uuid.MustUUID().String(),
+		Method:      uuid.MustUUID().String(),
+		Description: uuid.MustUUID().String(),
 	}
 	engine.ServeHTTP(w, newPostRequest(router, addItem))
 	assert.Equal(t, 200, w.Code)
@@ -42,9 +42,9 @@ func TestResource(t *testing.T) {
 
 	// put /resources/:id
 	putItem := getItem
-	putItem.Group = unique.MustUUID().String()
-	putItem.Path = unique.MustUUID().String()
-	putItem.Method = unique.MustUUID().String()
+	putItem.Group = uuid.MustUUID().String()
+	putItem.Path = uuid.MustUUID().String()
+	putItem.Method = uuid.MustUUID().String()
 	engine.ServeHTTP(w, newPutRequest("%s/%s", putItem, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)

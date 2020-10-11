@@ -1,7 +1,7 @@
 package api
 
 import (
-	"gin-admin-template/internal/app/ginplus"
+	"gin-admin-template/internal/app/ginx"
 	"gin-admin-template/internal/app/schema"
 	"github.com/brianvoe/gofakeit/v5"
 	"github.com/gin-gonic/gin"
@@ -59,5 +59,5 @@ func (a *Mock) UserQuery(c *gin.Context) {
 		userList = append(userList, user)
 	}
 
-	ginplus.ResPage(c, userList, &schema.PaginationResult{Total: 40, Current: 1, PageSize: 10})
+	ginx.ResPage(c, userList, &schema.PaginationResult{Total: 40, Current: 1, PageSize: 10})
 }

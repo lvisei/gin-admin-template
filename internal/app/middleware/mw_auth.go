@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"gin-admin-template/internal/app/config"
-	"gin-admin-template/internal/app/ginplus"
-	"gin-admin-template/internal/app/icontext"
+	"gin-admin-template/internal/app/contextx"
+	"gin-admin-template/internal/app/ginx"
 	"gin-admin-template/pkg/auth"
 	"gin-admin-template/pkg/errors"
 	"gin-admin-template/pkg/logger"
@@ -11,8 +11,8 @@ import (
 )
 
 func wrapUserAuthContext(c *gin.Context, userID string) {
-	ginplus.SetUserID(c, userID)
-	ctx := icontext.NewUserID(c.Request.Context(), userID)
+	ginx.SetUserID(c, userID)
+	ctx := contextx.NewUserID(c.Request.Context(), userID)
 	ctx = logger.NewUserIDContext(ctx, userID)
 	c.Request = c.Request.WithContext(ctx)
 }
@@ -32,7 +32,7 @@ func UserAuthMiddleware(a auth.Auther, skippers ...SkipperFunc) gin.HandlerFunc 
 			return
 		}
 
-		userID, err := a.ParseUserID(c.Request.Context(), ginplus.GetToken(c))
+		userID, err := a.ParseUserID(c.Request.Context(), ginx.GetToken(c))
 		if err != nil {
 			if err == auth.ErrInvalidToken {
 				if config.C.IsDebugMode() {
@@ -40,13 +40,13 @@ func UserAuthMiddleware(a auth.Auther, skippers ...SkipperFunc) gin.HandlerFunc 
 					c.Next()
 					return
 				}
-				ginplus.ResError(c, errors.ErrInvalidToken)
+				ginx.ResError(c, errors.ErrInvalidToken)
 				return
 			} else if err == auth.ErrExpiredToken {
-				ginplus.ResError(c, errors.ErrExpiredToken)
+				ginx.ResError(c, errors.ErrExpiredToken)
 				return
 			}
-			ginplus.ResError(c, errors.WithStack(err))
+			ginx.ResError(c, errors.WithStack(err))
 			return
 		}
 

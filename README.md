@@ -25,7 +25,6 @@
 - 基于 `Swaggo` 自动生成 `Swagger` 文档 -- 独立于接口的 mock 实现
 - 基于 `net/http/httptest` 标准包实现了 API 的单元测试
 - 基于 `go mod` 的依赖管理
-- 基于 `snowflake` 生成唯一 ID
 
 ## 依赖工具
 
@@ -79,7 +78,7 @@ swag init --generalInfo ./internal/app/swagger.go --output ./internal/app/swagge
 # 基于 Makefile
 make wire
 # 或者使用 wire 命令
-wire gen ./internal/app/injector
+wire gen ./internal/app
 ```
 
 ## 前端工程

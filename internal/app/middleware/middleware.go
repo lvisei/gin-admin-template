@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"fmt"
+	"gin-admin-template/internal/app/ginx"
 	"strings"
 
-	"gin-admin-template/internal/app/ginplus"
 	"gin-admin-template/pkg/errors"
 	"github.com/gin-gonic/gin"
 )
@@ -12,14 +12,14 @@ import (
 // NoMethodHandler 未找到请求方法的处理函数
 func NoMethodHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ginplus.ResError(c, errors.ErrMethodNotAllow)
+		ginx.ResError(c, errors.ErrMethodNotAllow)
 	}
 }
 
 // NoRouteHandler 未找到请求路由的处理函数
 func NoRouteHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ginplus.ResError(c, errors.ErrNotFound)
+		ginx.ResError(c, errors.ErrNotFound)
 	}
 }
 

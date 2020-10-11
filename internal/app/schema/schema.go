@@ -38,9 +38,9 @@ type ListResult struct {
 
 // PaginationResult 分页查询结果
 type PaginationResult struct {
-	Total    int  `json:"total"`
-	Current  uint `json:"current"`
-	PageSize uint `json:"pageSize"`
+	Total    int  `json:"total"`    //总数量
+	Current  uint `json:"current"`  // 页索引
+	PageSize uint `json:"pageSize"` // 页大小
 }
 
 // PaginationParam 分页查询条件
