@@ -35,6 +35,9 @@ test:
 clean:
 	rm -rf data release $(SERVER_BIN) internal/app/test/data cmd/${APP}/data
 
+out-packages:
+	go list -m -u all
+
 pack: build
 	rm -rf $(RELEASE_ROOT) && mkdir -p $(RELEASE_SERVER)
 	cp -r $(SERVER_BIN) configs $(RELEASE_SERVER)
