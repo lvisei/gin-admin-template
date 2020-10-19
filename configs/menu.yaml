@@ -43,7 +43,7 @@
             - method: POST
               path: "/api/v1/users"
               group: 用户接口
-              description: 查询数据
+              description: 新增数据
         - code: edit
           name: 编辑
           resources:
