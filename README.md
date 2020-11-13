@@ -69,7 +69,7 @@ go run cmd/gin-admin/main.go web -c ./configs/config.toml
 # 基于 Makefile
 make swagger
 # 或者使用 swag 命令
-swag init --generalInfo ./internal/app/swagger.go --output ./internal/app/swagger
+swag init --parseDependency --generalInfo ./internal/app/swagger.go --output ./internal/app/swagger
 ```
 
 ## 重新生成依赖注入文件
