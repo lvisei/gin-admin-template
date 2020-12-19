@@ -5,7 +5,7 @@ NOW = $(shell date -u '+%Y%m%d%I%M%S')
 RELEASE_VERSION = v7.0.0
 
 APP = gin-admin-template
-SERVER_BIN = ./cmd/${APP}/${APP}
+SERVER_BIN = ./cmd/${APP}
 RELEASE_ROOT = release
 RELEASE_SERVER = release/${APP}
 GIT_COUNT 		= $(shell git rev-list --all --count)
