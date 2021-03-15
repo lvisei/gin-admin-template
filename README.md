@@ -87,7 +87,9 @@ wire gen ./internal/app
 
 ## 工具
 
-- [gin-admin-cli](https://github.com/gin-admin/gin-admin-cli) - [GinAdmin](https://github.com/LyricTian/gin-admin) 辅助工具，提供创建项目、快速生成功能模块的功能
+- Swagger 文档在线导出[工具](https://www.docs4dev.com/tools/zh/swagger2markup/)
+
+[comment]: <> (- [gin-admin-cli]&#40;https://github.com/gin-admin/gin-admin-cli&#41; - [GinAdmin]&#40;https://github.com/LyricTian/gin-admin&#41; 辅助工具，提供创建项目、快速生成功能模块的功能)
 
 ## License
 
