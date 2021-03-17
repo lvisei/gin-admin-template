@@ -63,6 +63,7 @@ func InitLogger() (func(), error) {
 				dsn = config.C.MySQL.DSN()
 			case "sqlite3":
 				dsn = config.C.Sqlite3.DSN()
+				_ = os.MkdirAll(filepath.Dir(dsn), 0777)
 			case "postgres":
 				dsn = config.C.Postgres.DSN()
 			default:
