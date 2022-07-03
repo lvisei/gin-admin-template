@@ -2,16 +2,15 @@
 
 # gin-admin-template
 
- 基于 GIN + GORM/MONGO + CASBIN + WIRE 实现的 RBAC 权限管理系统模块
- 
+基于 GIN + GORM/MONGO + CASBIN + WIRE 实现的 RBAC 权限管理系统模块
 
 [![License](https://img.shields.io/npm/l/express.svg)](http://opensource.org/licenses/MIT)
 
 </div>
 
-**Live demo:** [https://vue-iview-admin-template.ywbang.icu](https://vue-iview-admin-template.ywbang.icu)
+**Live demo:** [https://vue-iview-admin-template.lvisei.icu](https://vue-iview-admin-template.lvisei.icu)
 
-**Swagger documentation:** [https://admin.ywbang.icu/swagger/index.html](https://admin.ywbang.icu/swagger/index.html)
+**Swagger documentation:** [https://admin.lvisei.icu/swagger/index.html](https://admin.lvisei.icu/swagger/index.html)
 
 ## 特性
 
@@ -50,7 +49,7 @@ go get -u github.com/swaggo/swag/cmd/swag
 
 ```bash
 # clone project
-git clone -b master https://github.com/liuvigongzuoshi/gin-admin-template
+git clone -b master https://github.com/lvisei/gin-admin-template
 # switch to the project directory
 cd gin-admin-template
 # use air to run
@@ -83,7 +82,7 @@ wire gen ./internal/app
 
 ## 前端工程
 
-[vue-iview-admin-template](https://github.com/liuvigongzuoshi/vue-iview-admin-template) - 基于 View UI 组件库参考 Ant Design Pro 的 vue 2.0 后台管理系统模板
+[vue-iview-admin-template](https://github.com/lvisei/vue-iview-admin-template) - 基于 View UI 组件库参考 Ant Design Pro 的 vue 2.0 后台管理系统模板
 
 ## 工具
 
@@ -93,6 +92,6 @@ wire gen ./internal/app
 
 ## License
 
-[MIT](https://github.com/liuvigongzuoshi/gin-admin-template/blob/master/LICENSE)
+[MIT](https://github.com/lvisei/gin-admin-template/blob/master/LICENSE)
 
-Copyright (c) 2020 liuvigongzuoshi
+Copyright (c) 2020 lvisei
